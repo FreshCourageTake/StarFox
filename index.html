@@ -9,6 +9,26 @@
   <script src="js/three.min.js"></script>
   <script src="js/OrbitControls.js"></script>
 
+    <script type="application/x-glsl" id="sky-vertex">
+  varying vec2 vUV;
+
+  void main() {
+    vUV = uv;
+    vec4 pos = vec4(position, 1.0);
+    gl_Position = projectionMatrix * modelViewMatrix * pos;
+  }
+  </script>
+
+    <script type="application/x-glsl" id="sky-fragment">
+  uniform sampler2D texture;
+  varying vec2 vUV;
+
+  void main() {
+    vec4 sample = texture2D(texture, vUV);
+    gl_FragColor = vec4(sample.xyz, sample.w);
+  }
+  </script>
+
   <script>
 
     // Set up the scene, camera, and renderer as global variables.
@@ -74,6 +94,32 @@
 
       // Add OrbitControls so that we can pan around with the mouse.
       controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+
+      //Setting up a skybox texture Under Construction
+      var urlPrefix = "images/";
+      var urls = [ urlPrefix + "posx.jpg", urlPrefix + "negx.jpg",
+        urlPrefix + "posy.jpg", urlPrefix + "negy.jpg",
+        urlPrefix + "posz.jpg", urlPrefix + "negz.jpg" ];
+      alert("Images: " + urls);
+      var textureCube = THREE.ImageUtils.loadTextureCube( urls );
+
+      //Shader
+      var shader = THREE.ShaderLib["cube"];
+      var uniforms = THREE.UniformsUtils.clone( shader.uniforms );
+      uniforms['tCube'].texture= textureCube;   // textureCube has been init before
+//      var material2 = new THREE.ShaderMaterial({
+//        fragmentShader    : shader.fragmentShader,
+//        vertexShader  : shader.vertexShader,
+//        uniforms  : uniforms
+//      });
+
+      // build the skybox Mesh
+      // BoxGeometry(width, height, depth, widthSegments, heightSegments, depthSegments)
+      var material = new THREE.MeshBasicMaterial( {color: 0x0154a0} );
+      skyboxMesh  = new THREE.Mesh( new THREE.CubeGeometry( 100, 100, 100, 1, 1, 1, null, true ), material );
+
+      scene.add( skyboxMesh );
 
     }
 
