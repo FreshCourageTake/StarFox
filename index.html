@@ -101,7 +101,7 @@
       var urls = [ urlPrefix + "posx.jpg", urlPrefix + "negx.jpg",
         urlPrefix + "posy.jpg", urlPrefix + "negy.jpg",
         urlPrefix + "posz.jpg", urlPrefix + "negz.jpg" ];
-      alert("Images: " + urls);
+      //alert("Images: " + urls);
       var textureCube = THREE.ImageUtils.loadTextureCube( urls );
 
       //Shader
@@ -116,7 +116,8 @@
 
       // build the skybox Mesh
       // BoxGeometry(width, height, depth, widthSegments, heightSegments, depthSegments)
-      var material = new THREE.MeshBasicMaterial( {color: 0x0154a0} );
+      var material = new THREE.MeshLambertMaterial( {color: 0x0654a0} );
+
       skyboxMesh  = new THREE.Mesh( new THREE.CubeGeometry( 100, 100, 100, 1, 1, 1, null, true ), material );
 
       scene.add( skyboxMesh );
