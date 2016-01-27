@@ -8,6 +8,7 @@
 
   <script src="js/three.min.js"></script>
   <script src="js/OrbitControls.js"></script>
+  <script src="moveable.js"></script>
 
 
   <script>
@@ -46,31 +47,21 @@
       });
 
       // Set the background color of the scene.
-      renderer.setClearColorHex(0x333F47, 1);
+      renderer.setClearColor(0x333F47, 1);
 
       // Create a light, set its position, and add it to the scene.
       var light = new THREE.PointLight(0xffffff);
       light.position.set(-100,200,100);
       scene.add(light);
 
-      //Load in the mesh and add it to the scene.
-      
-      var loader = new THREE.ObjectLoader();
-      loader.load("models/tie_fighter.json", 
-          function ( obj ) {
-              scene.add( obj );
-          }   
-      );
+      // .json files can be loaded using Moveable class.  .js files cannot
+      var tieBomber = new Moveable("models/tie_fighter.json", scene);
+      var xwing = new Moveable("models/starwars_xwing.json", scene);
 
       // loader = new THREE.JSONLoader();
       // loader.load( "models/horse.js", function(geometry){
       //   mesh = new THREE.Mesh( geometry, new THREE.MeshNormalMaterial() );
       //   scene.add(mesh);
-      // });
-
-      // loader = new THREE.ObjectLoader();
-      // loader.load("models/starwars_xwing.json", function (obj) {
-      //   scene.add(obj);
       // });
 
       // Add OrbitControls so that we can pan around with the mouse.
@@ -99,7 +90,6 @@
       // build the skybox Mesh
       // BoxGeometry(width, height, depth, widthSegments, heightSegments, depthSegments)
       var material = new THREE.MeshLambertMaterial( {color: 0x0654a0} );
-
       //skyboxMesh  = new THREE.Mesh( new THREE.CubeGeometry( 100, 100, 100, 1, 1, 1, null, true ), material );
       var geometry = new THREE.SphereGeometry(3000, 60, 40);
       skyBox = new THREE.Mesh(geometry, material);
