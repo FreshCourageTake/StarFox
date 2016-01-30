@@ -8,13 +8,28 @@
 
   <script src="js/three.min.js"></script>
   <script src="js/OrbitControls.js"></script>
-  <script src="moveable.js"></script>
+  <script src="ship.js"></script>
+  <script src="asteroid.js"></script>
+  <script src="js/keyboardstate.js"></script>
 
 
   <script>
 
     // Set up the scene, camera, and renderer as global variables.
     var scene, camera, renderer;
+
+    // variables for loaded objects
+    var tieBomber, xwing = null;
+
+    // array for cloned objects
+    var asteroids = [];
+
+    // flag for cloning asteroids once parent has loaded
+    var needToClone = true;
+
+    // https://stemkoski.github.io/Three.js/Keyboard.html
+    var keyboard = new KeyboardState();
+    var clock = new THREE.Clock();
 
     init();
     animate();
@@ -55,19 +70,22 @@
       scene.add(light);
 
       // .json files can be loaded using Moveable class.  .js files cannot
-      var tieBomber = new Moveable("models/tie_fighter.json", scene);
-      var xwing = new Moveable("models/starwars_xwing.json", scene);
+      tieBomber = new Ship("models/tie_fighter.json", scene);
+      asteroid = new Asteroid("models/asteroid.json", scene);
 
-      // loader = new THREE.JSONLoader();
+      // clone some asteroids
+      // for (var i = 0; i < 100; i++) {
+      //   asteroids.push(asteroid.clone());
+      // }
+
+      // var loader = new THREE.JSONLoader();
       // loader.load( "models/horse.js", function(geometry){
-      //   mesh = new THREE.Mesh( geometry, new THREE.MeshNormalMaterial() );
-      //   scene.add(mesh);
+      //   var horse = new THREE.Mesh( geometry, new THREE.MeshNormalMaterial() );
+      //   scene.add(horse);
       // });
 
       // Add OrbitControls so that we can pan around with the mouse.
       controls = new THREE.OrbitControls(camera, renderer.domElement);
-
-
 
       /* TODO figure out how to place texture to the sky dome
      // var texture = THREE.ImageUtils.generateDataTexture(10,10, 0x00FF00);
@@ -107,6 +125,33 @@
 
       // Read more about requestAnimationFrame at http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
       requestAnimationFrame(animate);
+
+      // Object matrix needs to be updated continually
+      tieBomber.model.updateMatrix();
+      asteroid.model.updateMatrix();
+
+      // rotate and update the asteroids
+        for (var i = 0; i < 100; i++) {
+          if (asteroids[i] != undefined) {
+            asteroids[i].rotation.set(asteroids[i].rotation.x + (Math.random() * 0.01),
+                                      asteroids[i].rotation.y + (Math.random() * 0.01),
+                                      asteroids[i].rotation.z + (Math.random() * 0.01));
+            asteroids[i].updateMatrix();
+          }
+        }
+
+      // User input callback
+      tieBomber.keyPress();
+
+      // clone the asteroids once the parent has loaded and give them a random angle
+      if (asteroid != undefined && needToClone == true) {
+        for (var i = 0; i < 100; i++) {
+          asteroids[i] = asteroid.clone();
+          asteroids[i].rotation.set(Math.random() * 360, Math.random() * 360, Math.random() * 360);
+          scene.add(asteroids[i]);
+        }
+        needToClone = false;
+      }
       
       // Render the scene.
       renderer.render(scene, camera);

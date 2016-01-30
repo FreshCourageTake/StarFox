@@ -14,7 +14,7 @@ class Ship {
       keyboard.update();
 
       var delta = clock.getDelta(); // seconds.
-      var moveDistance = 10 * delta; // 200 pixels per second
+      var moveDistance = 50 * delta; // 200 pixels per second
       var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
       
       // local transformations
