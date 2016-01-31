@@ -62,6 +62,9 @@ class Ship {
       }
 
       if ( keyboard.pressed("space") ) {
+        audio = new Audio('tie_fire.mp3');
+        // if (audio.ended)
+          audio.play();
         var bolt = new Bolt(laser.model, scene);
         // var bolt2 = new Bolt(laser.model, scene);
         // bolt2.model.position.set(this.model.position.x + .6, this.model.position.y, this.model.position.z - 1);

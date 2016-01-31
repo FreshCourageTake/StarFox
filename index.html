@@ -29,6 +29,9 @@
     // flag for cloning asteroids once parent has loaded
     var needToClone = true;
 
+    // for sound
+    var audio = null;
+
     // https://stemkoski.github.io/Three.js/Keyboard.html
     var keyboard = new KeyboardState();
     var clock = new THREE.Clock();
@@ -177,6 +180,9 @@
     }
 
   </script>
-
+  <!-- A little background music... -->
+  <audio autoplay>
+    <source src="star_wars.mp3" type="audio/mpeg">
+  </audio>
 </body>
 </html>
