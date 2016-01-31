@@ -10,6 +10,8 @@
   <script src="js/OrbitControls.js"></script>
   <script src="ship.js"></script>
   <script src="asteroid.js"></script>
+  <script src="laser.js"></script>
+  <script src="bolt.js"></script>
   <script src="js/keyboardstate.js"></script>
 
 
@@ -19,7 +21,7 @@
     var scene, camera, renderer;
 
     // variables for loaded objects
-    var tieBomber, xwing = null;
+    var tieBomber, xwing, laser = null;
 
     // array for cloned objects
     var asteroids = [];
@@ -72,6 +74,7 @@
       // .json files can be loaded using Moveable class.  .js files cannot
       tieBomber = new Ship("models/tie_fighter.json", scene);
       asteroid = new Asteroid("models/asteroid.json", scene);
+      laser = new Laser("models/laser.json", scene);
 
       // clone some asteroids
       // for (var i = 0; i < 100; i++) {
@@ -129,13 +132,27 @@
       // Object matrix needs to be updated continually
       tieBomber.model.updateMatrix();
       asteroid.model.updateMatrix();
+      laser.model.updateMatrix();
+
+      // fire a laser
+      if (tieBomber.lasers[0] != undefined) {
+        for (var i = 0; i < tieBomber.lasers.length; i++) {
+          tieBomber.lasers[i].advance();
+          tieBomber.lasers[i].model.updateMatrix();
+        }
+      }
 
       // rotate and update the asteroids
+      // Using an asteroid class will make this much smoother.  Take an object as the constructor parameter.
+      //    Include: rotation, velocity, size.
         for (var i = 0; i < 100; i++) {
           if (asteroids[i] != undefined) {
             asteroids[i].rotation.set(asteroids[i].rotation.x + (Math.random() * 0.01),
                                       asteroids[i].rotation.y + (Math.random() * 0.01),
                                       asteroids[i].rotation.z + (Math.random() * 0.01));
+            asteroids[i].translateX(Math.random() * 0.1);
+            asteroids[i].translateY(Math.random() * 0.1);
+            asteroids[i].translateZ(Math.random() * 0.1);
             asteroids[i].updateMatrix();
           }
         }
@@ -143,7 +160,7 @@
       // User input callback
       tieBomber.keyPress();
 
-      // clone the asteroids once the parent has loaded and give them a random angle
+      // clone the asteroids once the parent has loaded and give them a random rotation angle
       if (asteroid != undefined && needToClone == true) {
         for (var i = 0; i < 100; i++) {
           asteroids[i] = asteroid.clone();
