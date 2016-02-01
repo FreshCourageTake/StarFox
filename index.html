@@ -13,6 +13,9 @@
   <script src="asteroid.js"></script>
   <script src="laser.js"></script>
   <script src="bolt.js"></script>
+  <script src="draw.js"></script>
+  <script src="advance.js"></script>
+  <script src="control.js"></script>
   <script src="js/keyboardstate.js"></script>
 
 
@@ -38,7 +41,7 @@
     var clock = new THREE.Clock();
 
     init();
-    animate();
+    gameLoop();
 
     // Sets up the scene.
     function init() {
@@ -80,38 +83,6 @@
       asteroid = new Asteroid("models/asteroid.json", scene);
       laser = new Laser("models/laser.json", scene);
 
-      // clone some asteroids
-      // for (var i = 0; i < 100; i++) {
-      //   asteroids.push(asteroid.clone());
-      // }
-
-      // var loader = new THREE.JSONLoader();
-      // loader.load( "models/horse.js", function(geometry){
-      //   var horse = new THREE.Mesh( geometry, new THREE.MeshNormalMaterial() );
-      //   scene.add(horse);
-      // });
-
-      // Add OrbitControls so that we can pan around with the mouse.
-      controls = new THREE.OrbitControls(camera, renderer.domElement);
-
-      /* TODO figure out how to place texture to the sky dome
-     // var texture = THREE.ImageUtils.generateDataTexture(10,10, 0x00FF00);
-      var texture = THREE.ImageUtils.loadTexture( "images/negx.jpg" );
-      texture.wrapS = THREE.RepeatWrapping;
-      texture.wrapT = THREE.RepeatWrapping;
-      texture.repeat.set( 4, 4 );
-
-      //Shader
-      var shader = THREE.ShaderLib["cube"];
-      var uniforms = THREE.UniformsUtils.clone( shader.uniforms );
-      uniforms["tCube"].texture = texture;   // textureCube has been init before
-//      var material = new THREE.ShaderMaterial({
-//        fragmentShader    : shader.fragmentShader,
-//        vertexShader  : shader.vertexShader,
-//        uniforms  : uniforms
-//      });
-       */
-
       // build the skybox Mesh
       // BoxGeometry(width, height, depth, widthSegments, heightSegments, depthSegments)
       var material = new THREE.MeshLambertMaterial( {color: 0x0654a0} );
@@ -121,60 +92,24 @@
       skyBox.scale.set(-1, 1, 1);
       skyBox.rotation.order = 'XZY';
       skyBox.renderDepth = 1000.0;
-
       scene.add( skyBox );
 
+      // Add OrbitControls so that we can pan around with the mouse.
+      controls = new THREE.OrbitControls(camera, renderer.domElement);
     }
 
 
     // Renders the scene and updates the render as needed.
-    function animate() {
+    function gameLoop() {
 
       // Read more about requestAnimationFrame at http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
-      requestAnimationFrame(animate);
+      requestAnimationFrame(gameLoop);
 
-      // Object matrix needs to be updated continually
-      tieBomber.model.updateMatrix();
-      asteroid.model.updateMatrix();
-      laser.model.updateMatrix();
-
-      // fire a laser
-      if (tieBomber.lasers[0] != undefined) {
-        for (var i = 0; i < tieBomber.lasers.length; i++) {
-          tieBomber.lasers[i].advance();
-          tieBomber.lasers[i].model.updateMatrix();
-        }
-      }
-
-      // rotate and update the asteroids
-      // Using an asteroid class will make this much smoother.  Take an object as the constructor parameter.
-      //    Include: rotation, velocity, size.
-        for (var i = 0; i < 100; i++) {
-          if (asteroids[i] != undefined) {
-            asteroids[i].rotation.set(asteroids[i].rotation.x + (Math.random() * 0.01),
-                                      asteroids[i].rotation.y + (Math.random() * 0.01),
-                                      asteroids[i].rotation.z + (Math.random() * 0.01));
-            asteroids[i].translateX(Math.random() * 0.1);
-            asteroids[i].translateY(Math.random() * 0.1);
-            asteroids[i].translateZ(Math.random() * 0.1);
-            asteroids[i].updateMatrix();
-          }
-        }
-
-      // User input callback
-      tieBomber.keyPress();
-
-      // clone the asteroids once the parent has loaded and give them a random rotation angle
-      if (asteroid != undefined && needToClone == true) {
-        for (var i = 0; i < 100; i++) {
-          asteroids[i] = asteroid.clone();
-          asteroids[i].rotation.set(Math.random() * 360, Math.random() * 360, Math.random() * 360);
-          scene.add(asteroids[i]);
-        }
-        needToClone = false;
-      }
+      draw();
+      control();
+      advance();
       
-      // Render the scene.
+      // Render the scene.  These lines will mess things up if put in a different function
       renderer.render(scene, camera);
       controls.update();
 
