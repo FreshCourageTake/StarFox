@@ -379,7 +379,6 @@ THREE.OrbitControls = function ( object, domElement ) {
 	}
 	
 	function onKeyUp( event ) {
-
 		switch ( event.keyCode ) {
 
 			case scope.keys.ROTATE:
