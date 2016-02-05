@@ -23,10 +23,14 @@ class Ship {
       // local transformations
 
       // move forwards/backwards and rotate left/right
-      if ( keyboard.pressed("W") )
+      if ( keyboard.pressed("W") ) {
         this.model.translateZ( -moveDistance );
-      if ( keyboard.pressed("S") )
+        laser.model.translateZ( -moveDistance );
+      }
+      if ( keyboard.pressed("S") ) {
         this.model.translateZ(  moveDistance );
+        laser.model.translateZ( moveDistance );
+      }
       if ( keyboard.pressed("A") ) {
         this.model.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
         laser.model.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
@@ -62,13 +66,16 @@ class Ship {
       }
 
       if ( keyboard.pressed("space") ) {
+        // var adj = 0.6;
+        // if (this.model.position.x < 0)
+          // adj = -0.6;
         audio = new Audio('tie_fire.mp3');
-        // if (audio.ended)
-          audio.play();
+        audio.play();
+        // var bolt = new Bolt(laser.model, scene);
         var bolt = new Bolt(laser.model, scene);
         // var bolt2 = new Bolt(laser.model, scene);
-        // bolt2.model.position.set(this.model.position.x + .6, this.model.position.y, this.model.position.z - 1);
-        bolt.model.position.set(this.model.position.x, this.model.position.y, this.model.position.z);
+        bolt.model.position.set(laser.model.position.x, laser.model.position.y, laser.model.position.z);
+        // bolt2.model.position.set(laser2.position.x, laser2.position.y, laser2.position.z);
         this.lasers.push(bolt);
         // this.lasers.push(bolt2);
         // scene.add(bolt2.model);

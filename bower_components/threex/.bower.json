@@ -1,0 +1,14 @@
+{
+  "name": "threex",
+  "homepage": "https://github.com/jeromeetienne/threex",
+  "_release": "ce795a5942",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "ce795a5942f42e6f855d348eb7b45f582b0cddb0"
+  },
+  "_source": "git://github.com/jeromeetienne/threex.git",
+  "_target": "*",
+  "_originalSource": "threex",
+  "_direct": true
+}

@@ -14,6 +14,7 @@ function draw() {
         scene.add(asteroids[i]);
       }
       needToClone = false;
+      
     }
 
     // Render the scene.

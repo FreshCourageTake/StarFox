@@ -2,15 +2,15 @@
 
 class Asteroid {
 	constructor(type, scene) {
-		var loader = new THREE.ObjectLoader();
 		var that = this;
-      	loader.load(type, function ( obj ) {
-      		obj.position.set(Math.floor((Math.random() * 1000) - 500), 
-      						 Math.floor((Math.random() * 1000) - 500),
-      						 Math.floor((Math.random() * 1000) - 500));
-        	that.model = obj;
-        	scene.add( obj );
-          });
+
+		var loader = new THREE.JSONLoader();
+		loader.load( 'models/horse.js', function ( geometry, materials ) {
+		    var mesh = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial( materials ) );
+		    mesh.scale.set(30, 30, 30);
+		    that.model = mesh;
+		});
+
 	}
 
 	clone() {
