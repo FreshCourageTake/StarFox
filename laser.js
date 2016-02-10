@@ -5,9 +5,6 @@ class Laser {
 		var loader = new THREE.ObjectLoader();
 		var that = this;
 
-		// instantiate a loader
-        var loader = new THREE.OBJLoader();
-
         // load an obj / mtl resource pair
         loader.load(
             // OBJ resource URL
@@ -21,7 +18,7 @@ class Laser {
               }
             } );    
         	that.model = obj;
-        	that.model.scale.set(1, 1, 2);
+        	that.model.scale.set(.01, .01, .02);
      },
         // Function called when downloads progress
         function ( xhr ) {

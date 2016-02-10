@@ -6,10 +6,10 @@
 </head>
 <body style="margin: 0;">
 
-  <script src="bower_components/three.js/build/three.js"></script>
-  <script src="bower_components/three.js/examples/js/loaders/OBJLoader.js"></script>
-  <script src="bower_components/three.js/examples/js/loaders/MTLLoader.js"></script>
-  <script src="bower_components/three.js/examples/js/loaders/OBJMTLLoader.js"></script>
+  <script src="three.js-master/build/three.min.js"></script>
+  <script src="three.js-master/src/loaders/ObjectLoader.js"></script>
+  <script src="three.js-master/src/loaders/JSONLoader.js"></script>
+
   <script src="js/OrbitControls.js"></script>
   <script src="ship.js"></script>
   <script src="asteroid.js"></script>
@@ -20,9 +20,6 @@
   <script src="control.js"></script>
   <script src="js/shaderCode.js"></script>
   <script src="js/keyboardstate.js"></script>
-
-  <!--<script src="js/three.min.js"></script>-->
-
     
   <script id="vertexShader" type="x-shader/x-vertex">
     uniform sampler2D noiseTexture;
@@ -143,8 +140,8 @@
 
       // .json files can be loaded using Moveable class.  .js files cannot
       tieBomber = new Ship("models/tie_fighter.json", scene);
-      asteroid = new Asteroid("models/asteroid.json", scene);
-      laser = new Laser("models/tie_laser.obj", scene); // Create an object3D and add the laser to the ship so the laser will move automatically when the ship moves
+      asteroid = new Asteroid("models/horse.js", scene);
+      laser = new Laser("models/lasers.json", scene);
       
       // build the skybox Mesh
       loadSkybox();

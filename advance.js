@@ -2,11 +2,21 @@
 
 function advance() {
     // fire a laser
+    var deadLasers = 0;
     if (tieBomber.lasers[0] != undefined) {
       for (var i = 0; i < tieBomber.lasers.length; i++) {
+      	if (tieBomber.lasers[i].timeAlive < 0) {
+      		deadLasers++;
+      		scene.remove(tieBomber.lasers[i].model);
+      		scene.remove(tieBomber.lasers[i].pointLight);
+      	}
         tieBomber.lasers[i].advance();
         tieBomber.lasers[i].model.updateMatrix();
       }
+    }
+    while (deadLasers > 0) {
+    	tieBomber.lasers.shift();
+    	deadLasers--;
     }
 
     // rotate and update the asteroids
