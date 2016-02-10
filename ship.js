@@ -1,11 +1,15 @@
 "use strict";
 
+var CHARGED = 25;
+
 class Ship {
 	constructor(type, scene) {
 		var loader = new THREE.ObjectLoader();
 		var that = this;
     var test = null;
+    this.soundPlayed = false;
     this.lasers = [];
+    this.charge = 0;
   	loader.load(type, function ( obj ) {
     	that.model = obj;
     	scene.add( obj );
@@ -65,14 +69,39 @@ class Ship {
         laser.model.rotateOnAxis( new THREE.Vector3(0,0,1), -rotateAngle * 2);
       }
 
+      if ( keyboard.pressed("space") ) {
+        this.charge++;
+        if (this.charge >= CHARGED && !this.soundPlayed) {
+          audio = new Audio('charge_laser.mp3');
+          audio.play();
+          this.soundPlayed = true;
+        }
+      }
+
       // fire on key up so we can do charging bullets
       if ( keyboard.up("space") ) {
-        audio = new Audio('tie_fire.mp3');
-        audio.play();
-        var bolt = new Bolt(laser.model, scene);
-        bolt.model.position.set(laser.model.position.x, laser.model.position.y, laser.model.position.z);
-        this.lasers.push(bolt);
-        scene.add(bolt.model);
+        if (this.charge > CHARGED + 100) {
+          audio = new Audio('explosion.mp3');
+          audio.play();
+          var chargedBolt = new Bolt(bullet, scene, 0xff0000); // change laser.model
+          chargedBolt.model.position.set(laser.model.position.x, laser.model.position.y, laser.model.position.z);
+          chargedBolt.model.rotation.set(laser.model.rotation.x, laser.model.rotation.y, laser.model.rotation.z);
+          this.lasers.push(chargedBolt);
+          scene.add(chargedBolt.model);
+          this.charge = 0;
+          this.soundPlayed = false;
+        }
+        else {
+          audio = new Audio('tie_fire.mp3');
+          audio.play();
+          var bolt = new Bolt(laser.model, scene, 0x00ff00);
+          bolt.model.position.set(laser.model.position.x, laser.model.position.y, laser.model.position.z);
+          bolt.model.rotation.set(laser.model.rotation.x, laser.model.rotation.y, laser.model.rotation.z);
+          this.lasers.push(bolt);
+          scene.add(bolt.model);
+          this.charge = 0;
+          this.soundPlayed = false;
+        }
       }
       
       // reset ship position

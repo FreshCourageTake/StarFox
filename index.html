@@ -85,7 +85,7 @@
     var scene, camera, renderer;
 
     // variables for loaded objects
-    var tieBomber, xwing, asteroid, laser, temp = null;
+    var tieBomber, xwing, asteroid, laser, bullet, temp = null;
 
     // array for cloned objects
     var asteroids = [];
@@ -138,13 +138,23 @@
       light.position.set(-100,200,100);
       scene.add(light);
 
-      // .json files can be loaded using Moveable class.  .js files cannot
       tieBomber = new Ship("models/tie_fighter.json", scene);
       asteroid = new Asteroid("models/horse.js", scene);
       laser = new Laser("models/lasers.json", scene);
+
+      var loader = new THREE.ObjectLoader();
+      loader.load("models/bullet.json", function ( obj ) {
+        obj.traverse( function ( child ) {
+              if ( child instanceof THREE.Mesh ) {
+                child.material.color.setHex(0xff0000);
+              }
+            });
+        obj.scale.set(.1, .1, .1);
+        bullet = obj;
+      });
       
       // build the skybox Mesh
-      loadSkybox();
+      // loadSkybox();
 
       // Add OrbitControls so that we can pan around with the mouse.
       controls = new THREE.OrbitControls(camera, renderer.domElement);

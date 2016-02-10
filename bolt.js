@@ -1,12 +1,12 @@
 "use strict";
 
 class Bolt {
-	constructor(object, scene) {
+	constructor(object, scene, color) {
 		this.model = object.clone();
 
 		// Code to make the lasers into light sources
 		var sphere = new THREE.SphereGeometry( .01, 1, 8 );
-	    this.pointLight = new THREE.PointLight(0x00ff00, 1, 100);
+	    this.pointLight = new THREE.PointLight(color, 1, 100);
 	    this.pointLight.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0x00ff00 } ) ) );
 	    this.pointLight.position.set(laser.model.position.x, laser.model.position.y, laser.model.position.z);
 	    this.pointLight.rotation.set(laser.model.rotation.x, laser.model.rotation.y, laser.model.rotation.z);
