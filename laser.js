@@ -15,10 +15,11 @@ class Laser {
             obj.traverse( function ( child ) {
               if ( child instanceof THREE.Mesh ) {
                 child.material.color.setHex(0x0ff00);
+                child.material.specular.set(0,0,0);
               }
             } );    
         	that.model = obj;
-        	that.model.scale.set(.01, .01, .02);
+        	that.model.scale.set(.01, .01, .04);
      },
         // Function called when downloads progress
         function ( xhr ) {

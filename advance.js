@@ -22,7 +22,7 @@ function advance() {
     // rotate and update the asteroids
 	// Using an asteroid class will make this much smoother.  Take an object as the constructor parameter.
 	//    Include: rotation, velocity, size.
-	for (var i = 0; i < 100; i++) {
+	for (var i = 0; i < 50; i++) {
 	  if (asteroids[i] != undefined) {
 	    asteroids[i].rotation.set(asteroids[i].rotation.x + (Math.random() * 0.01),
 	                              asteroids[i].rotation.y + (Math.random() * 0.01),

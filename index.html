@@ -20,7 +20,9 @@
   <script src="control.js"></script>
   <script src="js/shaderCode.js"></script>
   <script src="js/keyboardstate.js"></script>
-    
+  <script src="OBJLoader.js"></script>
+  <script src="MTLLoader.js"></script>
+
   <script id="vertexShader" type="x-shader/x-vertex">
     uniform sampler2D noiseTexture;
     uniform float noiseScale;
@@ -139,7 +141,7 @@
       scene.add(light);
 
       tieBomber = new Ship("models/tie_fighter.json", scene);
-      asteroid = new Asteroid("models/horse.js", scene);
+      asteroid = new Asteroid("models/Asteroid.obj", scene);
       laser = new Laser("models/lasers.json", scene);
 
       var loader = new THREE.ObjectLoader();
