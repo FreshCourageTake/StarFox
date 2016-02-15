@@ -2,7 +2,7 @@
 
 function loadSkybox(){
     // base image texture for mesh
-    var lavaTexture = new THREE.ImageUtils.loadTexture( 'images/skyTexture1.jpg');
+    var lavaTexture = new THREE.ImageUtils.loadTexture( 'images/starTexture.jpg');
     lavaTexture.wrapS = lavaTexture.wrapT = THREE.RepeatWrapping;
     // multiplier for distortion speed
     var baseSpeed = 0.02;
@@ -11,13 +11,13 @@ function loadSkybox(){
     var repeatS = repeatT = 4.0;
 
     // texture used to generate "randomness", distort all other textures
-    var noiseTexture = new THREE.ImageUtils.loadTexture( 'images/skyTexture1.jpg' );
+    var noiseTexture = new THREE.ImageUtils.loadTexture( 'images/starTexture.jpg' );
     noiseTexture.wrapS = noiseTexture.wrapT = THREE.RepeatWrapping;
     // magnitude of noise effect
     var noiseScale = 0.5;
 
     // texture to additively blend with base image texture
-    var blendTexture = new THREE.ImageUtils.loadTexture( 'images/skyTexture1.jpg' );
+    var blendTexture = new THREE.ImageUtils.loadTexture( 'images/starTexture.jpg' );
     blendTexture.wrapS = blendTexture.wrapT = THREE.RepeatWrapping;
     // multiplier for distortion speed
     var blendSpeed = 0.01;
