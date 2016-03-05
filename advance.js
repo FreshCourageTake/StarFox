@@ -19,6 +19,11 @@ function advance() {
     	deadLasers--;
     }
 
+    temp.position.set(tieBomber.model.position.x, tieBomber.model.position.y, tieBomber.model.position.z);
+    tieBomber.advance();
+    laser.advance();
+
+
     // rotate and update the asteroids
 	// Using an asteroid class will make this much smoother.  Take an object as the constructor parameter.
 	//    Include: rotation, velocity, size.

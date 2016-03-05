@@ -4,7 +4,7 @@ class Laser {
 	constructor(type, scene) {
 		var loader = new THREE.ObjectLoader();
 		var that = this;
-
+        this.velocity = new Velocity();
         // load an obj / mtl resource pair
         loader.load(
             // OBJ resource URL
@@ -31,4 +31,10 @@ class Laser {
         });
 
 	}
+
+    advance() {
+        this.model.translateX(this.velocity.dx);
+        this.model.translateY(this.velocity.dy);
+        this.model.translateZ(this.velocity.dz);
+    }
 }

@@ -5,6 +5,7 @@ function draw() {
     tieBomber.model.updateMatrix();
     asteroid.model.updateMatrix();
     laser.model.updateMatrix();
+    temp.updateMatrix();
 
     // clone the asteroids once the parent has loaded and give them a random rotation angle
     if (asteroid != undefined && needToClone == true) {
