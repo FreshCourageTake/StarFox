@@ -19,8 +19,8 @@ class Bolt {
 
 	advance() {
 		// move the bullet and the light
-		this.model.translateZ(-this.delta);
-		this.pointLight.translateZ(-this.delta);
+		this.model.translateZ(-this.delta + tieBomber.velocity.dz);
+		this.pointLight.translateZ(-this.delta + tieBomber.velocity.dz);
 		// age the bolt
 		this.timeAlive--;
 		this.model.updateMatrix();

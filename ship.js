@@ -21,11 +21,12 @@ class Ship {
 	}
 
   advance() {
-    this.model.position.z = this.model.position.z + this.velocity.dz;
-    // this.model.translateX(this.velocity.dx);
-    // this.model.translateY(this.velocity.dy);
-    this.model.position.x = this.model.position.x + this.velocity.dx;
-    this.model.position.y = this.model.position.y + this.velocity.dy;
+    // this.model.position.z = this.model.position.z + this.velocity.dz;
+    this.model.translateZ(this.velocity.dz);
+    this.model.translateX(this.velocity.dx);
+    this.model.translateY(this.velocity.dy);
+    // this.model.position.x = this.model.position.x + this.velocity.dx;
+    // this.model.position.y = this.model.position.y + this.velocity.dy;
   }
 
 	keyPress() {
@@ -40,39 +41,51 @@ class Ship {
 
       // move forwards/backwards and rotate left/right
       if ( keyboard.pressed("W") ) {
+        this.velocity.setDz(-moveDistance);
+        laser.velocity.setDz(-moveDistance);
+        // this.model.translateZ( -moveDistance );
+        // laser.model.translateZ( -moveDistance );
 
-        var angleXZ = -Math.cos(this.orientationXZ);
-        var angleYZ = -Math.cos(this.orientationYZ);
+        // var angleXZ = -Math.cos(this.orientationXZ);
+        // var angleYZ = -Math.cos(this.orientationYZ);
 
-        if (angleXZ < 0 && angleYZ < 0) {
-          fix = moveDistance;
-        }
-        else if (angleXZ > 0 && angleYZ > 0) {
-          fix = -moveDistance * 3;
-        }
+        // if (angleXZ < 0 && angleYZ < 0) {
+        //   fix = moveDistance;
+        // }
+        // else if (angleXZ > 0 && angleYZ > 0) {
+        //   fix = -moveDistance * 3;
+        // }
 
-        this.velocity.setDz( (angleXZ * moveDistance) );
+        // // console.log( (-angleXZ + -angleYZ) * moveDistance);
+
         // this.velocity.setDz( ((angleXZ + angleYZ) * moveDistance) + fix );
-        
-        this.velocity.setDx(Math.sin(this.orientationXZ) * moveDistance);
+        // console.log( (angleXZ + angleYZ) * moveDistance + " + " + fix );
+        // this.velocity.setDx(Math.sin(this.orientationXZ) * moveDistance);
+        // // console.log("Dx: " + this.velocity.dx);
+        // // console.log("Dz from xz plane: " + -Math.cos(this.orientationXZ) * moveDistance);
 
-        this.velocity.setDy(Math.sin(this.orientationYZ) * moveDistance);
+        // // this.velocity.setDz(-Math.cos(this.orientationYZ) * moveDistance);
+        // this.velocity.setDy(Math.sin(this.orientationYZ) * moveDistance);
+        // // console.log("Dy: " + this.velocity.dy);
+        // // console.log("Dz from yz plane: " + -Math.cos(this.orientationYZ) * moveDistance);
+
+        // // this.velocity.setDz(Math.cos(this.orientationZ));
       }
       if ( keyboard.pressed("S") ) {
         // this.model.translateZ(  moveDistance );
         // laser.model.translateZ( moveDistance );
-        // this.velocity.setDz(moveDistance);
-        // laser.velocity.setDz(moveDistance);
+        this.velocity.setDz(moveDistance);
+        laser.velocity.setDz(moveDistance);
       }
       if ( keyboard.pressed("A") ) {
         this.model.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
         laser.model.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
-        this.orientationXZ -= rotateAngle;
+        // this.orientationXZ -= rotateAngle;
       }
       if ( keyboard.pressed("D") ) {
         this.model.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
         laser.model.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
-        this.orientationXZ += rotateAngle;
+        // this.orientationXZ += rotateAngle;
       }
 
       // strafe left/right
@@ -84,29 +97,24 @@ class Ship {
       // rotate left/right/up/down
       var rotation_matrix = new THREE.Matrix4().identity();
       if ( keyboard.pressed("I") ) {
-          if (this.orientationYZ < 1.7) {
-          this.model.rotateOnAxis( new THREE.Vector3(1,0,0), rotateAngle);
-          laser.model.rotateOnAxis( new THREE.Vector3(1,0,0), rotateAngle);
-          this.orientationYZ += rotateAngle;
-          console.log(this.orientationYZ);
-        }
+        this.model.rotateOnAxis( new THREE.Vector3(1,0,0), rotateAngle);
+        laser.model.rotateOnAxis( new THREE.Vector3(1,0,0), rotateAngle);
+        this.orientationYZ += rotateAngle;
       }
       if ( keyboard.pressed("K") ) {
-        if (this.orientationYZ > -1.3) {
-          this.model.rotateOnAxis( new THREE.Vector3(1,0,0), -rotateAngle);
-          laser.model.rotateOnAxis( new THREE.Vector3(1,0,0), -rotateAngle);
-          this.orientationYZ -= rotateAngle;
-          console.log(this.orientationYZ);
-        }
+        this.model.rotateOnAxis( new THREE.Vector3(1,0,0), -rotateAngle);
+        laser.model.rotateOnAxis( new THREE.Vector3(1,0,0), -rotateAngle);
+        this.orientationYZ -= rotateAngle;
+
       }
-      // if ( keyboard.pressed("J") ) {
-      //   this.model.rotateOnAxis( new THREE.Vector3(0,0,1), rotateAngle * 2);
-      //   laser.model.rotateOnAxis( new THREE.Vector3(0,0,1), rotateAngle * 2);
-      // }
-      // if ( keyboard.pressed("L") ) {
-      //   this.model.rotateOnAxis( new THREE.Vector3(0,0,1), -rotateAngle * 2);
-      //   laser.model.rotateOnAxis( new THREE.Vector3(0,0,1), -rotateAngle * 2);
-      // }
+      if ( keyboard.pressed("J") ) {
+        this.model.rotateOnAxis( new THREE.Vector3(0,0,1), rotateAngle * 2);
+        laser.model.rotateOnAxis( new THREE.Vector3(0,0,1), rotateAngle * 2);
+      }
+      if ( keyboard.pressed("L") ) {
+        this.model.rotateOnAxis( new THREE.Vector3(0,0,1), -rotateAngle * 2);
+        laser.model.rotateOnAxis( new THREE.Vector3(0,0,1), -rotateAngle * 2);
+      }
 
       if ( keyboard.pressed("space") ) {
         this.charge++;
