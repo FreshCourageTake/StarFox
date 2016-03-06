@@ -20,6 +20,7 @@ function advance() {
     }
 
     temp.position.set(tieBomber.model.position.x, tieBomber.model.position.y, tieBomber.model.position.z);
+    skyBox.position.set(tieBomber.model.position.x, tieBomber.model.position.y, tieBomber.model.position.z);
     tieBomber.advance();
     laser.advance();
 

@@ -24,71 +24,13 @@
   <script src="OBJLoader.js"></script>
   <script src="MTLLoader.js"></script>
 
-  <script id="vertexShader" type="x-shader/x-vertex">
-    uniform sampler2D noiseTexture;
-    uniform float noiseScale;
-    uniform sampler2D bumpTexture;
-    uniform float bumpSpeed;
-    uniform float bumpScale;
-    uniform float time;
-    varying vec2 vUv;
-    void main()
-    {
-        vUv = uv;
-
-        vec2 uvTimeShift = vUv + vec2( 1.1, 1.9 ) * time * bumpSpeed;
-        vec4 noiseGeneratorTimeShift = texture2D( noiseTexture, uvTimeShift );
-        vec2 uvNoiseTimeShift = vUv + noiseScale * vec2( noiseGeneratorTimeShift.r, noiseGeneratorTimeShift.g );
-        // below, using uvTimeShift seems to result in more of a "rippling" effect
-        //   while uvNoiseTimeShift seems to result in more of a "shivering" effect
-        vec4 bumpData = texture2D( bumpTexture, uvTimeShift );
-        // move the position along the normal
-        //  but displace the vertices at the poles by the same amount
-        float displacement = ( vUv.y > 0.999 || vUv.y < 0.001 ) ?
-            bumpScale * (0.3 + 0.02 * sin(time)) :
-            bumpScale * bumpData.r;
-        vec3 newPosition = position + normal * displacement;
-
-        gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
-    }
-</script>
-
-  <script id="fragmentShader" type="x-shader/x-vertex">
-    uniform sampler2D baseTexture;
-    uniform float baseSpeed;
-    uniform float repeatS;
-    uniform float repeatT;
-    uniform sampler2D noiseTexture;
-    uniform float noiseScale;
-    uniform sampler2D blendTexture;
-    uniform float blendSpeed;
-    uniform float blendOffset;
-    uniform float time;
-    uniform float alpha;
-    varying vec2 vUv;
-    void main()
-    {
-        vec2 uvTimeShift = vUv + vec2( -0.7, 1.5 ) * time * baseSpeed;
-        vec4 noiseGeneratorTimeShift = texture2D( noiseTexture, uvTimeShift );
-        vec2 uvNoiseTimeShift = vUv + noiseScale * vec2( noiseGeneratorTimeShift.r, noiseGeneratorTimeShift.b );
-        vec4 baseColor = texture2D( baseTexture, uvNoiseTimeShift * vec2(repeatS, repeatT) );
-        vec2 uvTimeShift2 = vUv + vec2( 1.3, -1.7 ) * time * blendSpeed;
-        vec4 noiseGeneratorTimeShift2 = texture2D( noiseTexture, uvTimeShift2 );
-        vec2 uvNoiseTimeShift2 = vUv + noiseScale * vec2( noiseGeneratorTimeShift2.g, noiseGeneratorTimeShift2.b );
-        vec4 blendColor = texture2D( blendTexture, uvNoiseTimeShift2 * vec2(repeatS, repeatT) ) - blendOffset * vec4(1.0, 1.0, 1.0, 1.0);
-        vec4 theColor = baseColor + blendColor;
-        theColor.a = alpha;
-        gl_FragColor = theColor;
-    }
-</script>
-
   <script>
 
     // Set up the scene, camera, and renderer as global variables.
     var scene, camera, renderer;
 
     // variables for loaded objects
-    var tieBomber, xwing, asteroid, laser, bullet, temp = null;
+    var tieBomber, xwing, asteroid, laser, bullet, temp, skyBox = null;
 
     // array for cloned objects
     var asteroids = [];
@@ -164,7 +106,21 @@
       });
       
       // build the skybox Mesh
-      loadSkybox();
+      var imagePrefix = "images/";
+      // var directions  = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];  // Use this for skybox with dif side images
+      // var imageSuffix = ".jpg";
+      var skyGeometry = new THREE.CubeGeometry( 5000, 5000, 5000 ); 
+      
+      var materialArray = [];
+      for (var i = 0; i < 6; i++)
+        materialArray.push( new THREE.MeshBasicMaterial({
+          map: THREE.ImageUtils.loadTexture( imagePrefix + "stars.png" ),
+          // map: THREE.ImageUtils.loadTexture( imagePrefix + directions[i] + imageSuffix ), // Use this for skybox with dif side images
+          side: THREE.BackSide
+        }));
+      var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
+      skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
+      scene.add( skyBox );
 
       // Add OrbitControls so that we can pan around with the mouse.
       controls = new THREE.OrbitControls(camera, renderer.domElement);
