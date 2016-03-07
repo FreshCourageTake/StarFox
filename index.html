@@ -106,16 +106,16 @@
       });
       
       // build the skybox Mesh
-      var imagePrefix = "images/";
-      // var directions  = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];  // Use this for skybox with dif side images
-      // var imageSuffix = ".jpg";
+      var imagePrefix = "images/nebula_";
+      var directions  = ["right1", "left2", "top3", "bottom4", "front5", "back6" ];  // Use this for skybox with dif side images
+      var imageSuffix = ".png";
       var skyGeometry = new THREE.CubeGeometry( 5000, 5000, 5000 ); 
       
       var materialArray = [];
       for (var i = 0; i < 6; i++)
         materialArray.push( new THREE.MeshBasicMaterial({
-          map: THREE.ImageUtils.loadTexture( imagePrefix + "stars.png" ),
-          // map: THREE.ImageUtils.loadTexture( imagePrefix + directions[i] + imageSuffix ), // Use this for skybox with dif side images
+          // map: THREE.ImageUtils.loadTexture( imagePrefix + "stars.png" ),
+          map: THREE.ImageUtils.loadTexture( imagePrefix + directions[i] + imageSuffix ), // Use this for skybox with dif side images
           side: THREE.BackSide
         }));
       var skyMaterial = new THREE.MeshFaceMaterial( materialArray );

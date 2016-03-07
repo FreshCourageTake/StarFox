@@ -77,16 +77,16 @@ class Ship {
         this.velocity.setDz(moveDistance);
         laser.velocity.setDz(moveDistance);
       }
-      if ( keyboard.pressed("A") ) {
-        this.model.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
-        laser.model.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
-        // this.orientationXZ -= rotateAngle;
-      }
-      if ( keyboard.pressed("D") ) {
-        this.model.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
-        laser.model.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
-        // this.orientationXZ += rotateAngle;
-      }
+      // if ( keyboard.pressed("A") ) {
+      //   this.model.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
+      //   laser.model.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
+      //   // this.orientationXZ -= rotateAngle;
+      // }
+      // if ( keyboard.pressed("D") ) {
+      //   this.model.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
+      //   laser.model.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
+      //   // this.orientationXZ += rotateAngle;
+      // }
 
       // strafe left/right
       // if ( keyboard.pressed("Q") )
