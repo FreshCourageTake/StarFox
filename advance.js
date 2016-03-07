@@ -78,8 +78,10 @@ function advance() {
     for (var a = 0; a < asteroids.length; a++) {
       if(asteroids[a].model != undefined && tieBomber.model != undefined) // Ensure creation
             if(tieBomber.colBox.intersectsBox(asteroids[a].colBox)) {// Check collision
+                tieBomber.velocity.dx = tieBomber.velocity.dy = tieBomber.velocity.dz = 0;
                 scene.remove(tieBomber.model);
                 parts.push(new ExplodeAnimation(asteroids[a].model.position.x, asteroids[a].model.position.y, asteroids[a].model.position.z));
+                parts.push(new ExplodeAnimation(tieBomber.model.position.x, tieBomber.model.position.y, tieBomber.model.position.z, true));
                 audio = new Audio('asteroid_explosion.mp3');
                 audio.play();
                 audio = new Audio('Wilhelm-Scream.mp3');

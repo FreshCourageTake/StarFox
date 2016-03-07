@@ -9,7 +9,7 @@ var dirs = [];
 var parts = [];
 
 // http://codepen.io/Xanmia/pen/DoljI
-function ExplodeAnimation(x,y,z)
+function ExplodeAnimation(x,y,z,red)
 {
   var geometry = new THREE.Geometry();
   
@@ -23,7 +23,12 @@ function ExplodeAnimation(x,y,z)
     geometry.vertices.push( vertex );
     dirs.push({x:(Math.random() * movementSpeed)-(movementSpeed/2),y:(Math.random() * movementSpeed)-(movementSpeed/2),z:(Math.random() * movementSpeed)-(movementSpeed/2)});
   }
-  var material = new THREE.ParticleBasicMaterial( { size: objectSize,  color: colors[Math.round(Math.random() * colors.length)] });
+  if (red)
+    var material = new THREE.ParticleBasicMaterial( { size: objectSize,  color: 0xFF0000 });
+  else
+    var material = new THREE.ParticleBasicMaterial( { size: objectSize,  color: colors[Math.round(Math.random() * colors.length)] });
+
+
   var particles = new THREE.ParticleSystem( geometry, material );
   
   this.object = particles;
