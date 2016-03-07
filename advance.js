@@ -47,6 +47,8 @@ function advance() {
         		if(tieBomber.lasers[b].colBox.intersectsBox(asteroids[a].colBox)) {// Check collision
         		    tieBomber.lasers[b].model.x = 1000000000000
                 delete tieBomber.lasers[b].colBox;
+                audio = new Audio('asteroid_explosion.mp3');
+                audio.play();
                 if (asteroids[a].type == "big") {
                   for (var i = 0; i < 3; i++) {
                       var rock = new medAsteroidClone(asteroids[a].model.clone());
@@ -76,8 +78,13 @@ function advance() {
     for (var a = 0; a < asteroids.length; a++) {
       if(asteroids[a].model != undefined && tieBomber.model != undefined) // Ensure creation
             if(tieBomber.colBox.intersectsBox(asteroids[a].colBox)) {// Check collision
-                asteroids[a].model.position.x = 10000000;
                 scene.remove(tieBomber.model);
+                parts.push(new ExplodeAnimation(asteroids[a].model.position.x, asteroids[a].model.position.y, asteroids[a].model.position.z));
+                audio = new Audio('asteroid_explosion.mp3');
+                audio.play();
+                audio = new Audio('Wilhelm-Scream.mp3');
+                audio.play();
+                asteroids[a].model.position.x = 10000000;
             }
     }
 }
