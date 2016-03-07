@@ -7,19 +7,16 @@ function draw() {
     laser.model.updateMatrix();
     temp.updateMatrix();
 
-    // clone the asteroids once the parent has loaded and give them a random rotation angle
-    if (asteroid != undefined && needToClone == true) {
-      for (var i = 0; i < 50; i++) {
-        asteroids[i] = asteroid.clone();
-        asteroids[i].rotation.set(Math.random() * 360, Math.random() * 360, Math.random() * 360);
-        // var scale = (Math.random() * 30) - 15;
-        // asteroids[i].scale.set(scale, scale, scale); // could be used for irregular-sized asteroids.
-        scene.add(asteroids[i]);
-      }
-      needToClone = false;
-      
+    // clone the asteroids once the parent has loaded and give them a random rotation angl
+    if(asteroid != undefined && needToClone==true) {
+	for(var i = 0; i < 50; i++) {
+	    asteroids[i] = new asteroidClone(asteroid.clone());
+	    asteroids[i].model.rotation.set(Math.random() * 360, Math.random() * 360, Math.random() * 360);
+            scene.add(asteroids[i].model); 
+	}
+	needToClone = false;
     }
 
     // Render the scene.
-	// renderer.render(scene, camera);
+    // renderer.render(scene, camera);
 }

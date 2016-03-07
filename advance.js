@@ -24,19 +24,23 @@ function advance() {
     tieBomber.advance();
     laser.advance();
 
-
     // rotate and update the asteroids
-	// Using an asteroid class will make this much smoother.  Take an object as the constructor parameter.
-	//    Include: rotation, velocity, size.
-	for (var i = 0; i < 50; i++) {
-	  if (asteroids[i] != undefined) {
-	    asteroids[i].rotation.set(asteroids[i].rotation.x + (Math.random() * 0.01),
-	                              asteroids[i].rotation.y + (Math.random() * 0.01),
-	                              asteroids[i].rotation.z + (Math.random() * 0.01));
-	    asteroids[i].translateX(Math.random() * 0.1);
-	    asteroids[i].translateY(Math.random() * 0.1);
-	    asteroids[i].translateZ(Math.random() * 0.1);
-	    asteroids[i].updateMatrix();
-	  }
+    // Using an asteroid class will make this much smoother.  Take an object as the constructor parameter.
+    //    Include: rotation, velocity, size.
+    for (var i = 0; i < 50; i++) {
+	if(asteroids[i].model.rotation.x != undefined)
+	    asteroids[i].rotateMove();
+    }
+
+    // LASER Collision detection
+    for(var a = 0; a < asteroids.length; a++) {
+	for(var b = 0; b < tieBomber.lasers.length; b++) {
+	    
+	    if(asteroids[a].model != undefined && tieBomber.lasers[b].model != undefined) // Ensure creation
+		if(tieBomber.lasers[b].colBox.intersectsBox(asteroids[a].colBox)) {// Check collision
+		    asteroids[a].model.position.x = 10000000;
+		    tieBomber.laers[b].model.x = 1000000000000
+		}
 	}
+    }
 }
