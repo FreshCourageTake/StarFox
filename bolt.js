@@ -28,6 +28,7 @@ class Bolt {
 	// age the bolt
 	this.timeAlive--;
 	this.model.updateMatrix();
-	this.colBox.setFromObject(this.model);
+	if (this.colBox != undefined)
+		this.colBox.setFromObject(this.model);
     }
 }

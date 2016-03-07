@@ -16,7 +16,12 @@ class Ship {
     this.charge = 0;
   	loader.load(type, function ( obj ) {
     	that.model = obj;
-    	scene.add( obj );
+      scene.add( obj );
+
+      that.colBox = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3());
+      that.colBox.setFromObject(that.model);
+      // that.thing = new THREE.BoundingBoxHelper(that.model);
+      // scene.add(that.thing);
       });
 	}
 
@@ -25,6 +30,8 @@ class Ship {
     this.model.translateZ(this.velocity.dz);
     this.model.translateX(this.velocity.dx);
     this.model.translateY(this.velocity.dy);
+    this.colBox.setFromObject(this.model);
+    // this.thing.update();
     // this.model.position.x = this.model.position.x + this.velocity.dx;
     // this.model.position.y = this.model.position.y + this.velocity.dy;
   }

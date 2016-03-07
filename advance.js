@@ -24,23 +24,60 @@ function advance() {
     tieBomber.advance();
     laser.advance();
 
+    // particle explosion
+    var pCount = parts.length;
+    while(pCount--) {
+      parts[pCount].update();
+    }
+
     // rotate and update the asteroids
     // Using an asteroid class will make this much smoother.  Take an object as the constructor parameter.
     //    Include: rotation, velocity, size.
-    for (var i = 0; i < 50; i++) {
+    for (var i = 0; i < asteroids.length; i++) {
 	if(asteroids[i].model.rotation.x != undefined)
 	    asteroids[i].rotateMove();
     }
 
     // LASER Collision detection
-    for(var a = 0; a < asteroids.length; a++) {
-	for(var b = 0; b < tieBomber.lasers.length; b++) {
-	    
-	    if(asteroids[a].model != undefined && tieBomber.lasers[b].model != undefined) // Ensure creation
-		if(tieBomber.lasers[b].colBox.intersectsBox(asteroids[a].colBox)) {// Check collision
-		    asteroids[a].model.position.x = 10000000;
-		    tieBomber.laers[b].model.x = 1000000000000
-		}
-	}
+    var limit = asteroids.length; // avoids infinite loop when we create smaller asteroids
+    for(var a = 0; a < limit; a++) {
+    	for(var b = 0; b < tieBomber.lasers.length; b++) {
+    	    
+    	    if(asteroids[a].model != undefined && tieBomber.lasers[b].model != undefined && tieBomber.lasers[b].colBox != undefined) { // Ensure creation
+        		if(tieBomber.lasers[b].colBox.intersectsBox(asteroids[a].colBox)) {// Check collision
+        		    tieBomber.lasers[b].model.x = 1000000000000
+                delete tieBomber.lasers[b].colBox;
+                if (asteroids[a].type == "big") {
+                  for (var i = 0; i < 3; i++) {
+                      var rock = new medAsteroidClone(asteroids[a].model.clone());
+                      asteroids.push(rock);
+                      scene.add(rock.model);
+                    }
+                    parts.push(new ExplodeAnimation(asteroids[a].model.position.x, asteroids[a].model.position.y, asteroids[a].model.position.z));
+                    asteroids[a].model.position.x = 10000000; 
+                } else if (asteroids[a].type == "med") {
+                    for (var i = 0; i < 4; i++) {
+                      var rock = new smallAsteroidClone(asteroids[a].model.clone());
+                      asteroids.push(rock);
+                      scene.add(rock.model);
+                    }
+                    parts.push(new ExplodeAnimation(asteroids[a].model.position.x, asteroids[a].model.position.y, asteroids[a].model.position.z));
+                    asteroids[a].model.position.x = 10000000;                  
+                } else {
+                    parts.push(new ExplodeAnimation(asteroids[a].model.position.x, asteroids[a].model.position.y, asteroids[a].model.position.z));
+                    asteroids[a].model.position.x = 10000000;
+                }
+        		}
+          }
+    	}
+    }
+
+    // SHIP Collision detection
+    for (var a = 0; a < asteroids.length; a++) {
+      if(asteroids[a].model != undefined && tieBomber.model != undefined) // Ensure creation
+            if(tieBomber.colBox.intersectsBox(asteroids[a].colBox)) {// Check collision
+                asteroids[a].model.position.x = 10000000;
+                scene.remove(tieBomber.model);
+            }
     }
 }
