@@ -55,7 +55,7 @@ function advance() {
                       asteroids.push(rock);
                       scene.add(rock.model);
                     }
-                    parts.push(new ExplodeAnimation(asteroids[a].model.position.x, asteroids[a].model.position.y, asteroids[a].model.position.z));
+                    parts.push(new ExplodeAnimation(tieBomber.lasers[b].model.position.x, tieBomber.lasers[b].model.position.y, tieBomber.lasers[b].model.position.z));
                     asteroids[a].model.position.x = 10000000; 
                 } else if (asteroids[a].type == "med") {
                     for (var i = 0; i < 4; i++) {
@@ -63,10 +63,10 @@ function advance() {
                       asteroids.push(rock);
                       scene.add(rock.model);
                     }
-                    parts.push(new ExplodeAnimation(asteroids[a].model.position.x, asteroids[a].model.position.y, asteroids[a].model.position.z));
+                    parts.push(new ExplodeAnimation(tieBomber.lasers[b].model.position.x, tieBomber.lasers[b].model.position.y, tieBomber.lasers[b].model.position.z));
                     asteroids[a].model.position.x = 10000000;                  
                 } else {
-                    parts.push(new ExplodeAnimation(asteroids[a].model.position.x, asteroids[a].model.position.y, asteroids[a].model.position.z));
+                    parts.push(new ExplodeAnimation(tieBomber.lasers[b].model.position.x, tieBomber.lasers[b].model.position.y, tieBomber.lasers[b].model.position.z));
                     asteroids[a].model.position.x = 10000000;
                 }
         		}
@@ -80,8 +80,8 @@ function advance() {
             if(tieBomber.colBox.intersectsBox(asteroids[a].colBox)) {// Check collision
                 tieBomber.velocity.dx = tieBomber.velocity.dy = tieBomber.velocity.dz = 0;
                 scene.remove(tieBomber.model);
-                parts.push(new ExplodeAnimation(asteroids[a].model.position.x, asteroids[a].model.position.y, asteroids[a].model.position.z));
-                parts.push(new ExplodeAnimation(tieBomber.model.position.x, tieBomber.model.position.y, tieBomber.model.position.z, true));
+                parts.push(new ExplodeAnimation(asteroids[a].model.position.x, asteroids[a].model.position.y, asteroids[a].model.position.z),
+                           new ExplodeAnimation(tieBomber.model.position.x, tieBomber.model.position.y, tieBomber.model.position.z, true));
                 audio = new Audio('asteroid_explosion.mp3');
                 audio.play();
                 audio = new Audio('Wilhelm-Scream.mp3');
