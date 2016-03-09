@@ -64,7 +64,6 @@ function advance() {
     var limit = asteroids.length; // avoids infinite loop when we create smaller asteroids
     for(var a = 0; a < limit; a++) {
     	for(var b = 0; b < tieBomber.lasers.length; b++) {
-    	    
     	    if(asteroids[a].model != undefined && tieBomber.lasers[b].model != undefined && tieBomber.lasers[b].colBox != undefined) { // Ensure creation
         		if(tieBomber.lasers[b].colBox.intersectsBox(asteroids[a].colBox)) {// Check collision
         		    tieBomber.lasers[b].model.x = 1000000000000
@@ -153,7 +152,7 @@ function advance() {
                        new ExplodeAnimation(arwing.model.position.x, arwing.model.position.y, arwing.model.position.z, true));
             audio = new Audio('asteroid_explosion.mp3');
             audio.play();
-            audio = new Audio('Wilhelm-Scream.mp3');
+            audio = new Audio('fox-ahhh.mp3');
             audio.play();
             asteroids[a].model.position.x = 10000000;
         }

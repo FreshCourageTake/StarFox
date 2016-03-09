@@ -37,6 +37,16 @@ class Arwing {
     // this.model.position.y = this.model.position.y + this.velocity.dy;
   }
 
+  kill() {
+    this.velocity.dx = this.velocity.dy = this.velocity.dz = 0;
+    scene.remove(this.model);
+    parts.push(new ExplodeAnimation(this.model.position.x, this.model.position.y, this.model.position.z, true));
+    audio = new Audio('asteroid_explosion.mp3');
+    audio.play();
+    audio = new Audio('fox-ahhh.mp3');
+    audio.play();
+  }
+
 	keyPress() {
       keyboard.update();
 
@@ -154,7 +164,7 @@ class Arwing {
           temp.material.visible = false;
         }
         else {
-          audio = new Audio('tie_fire.mp3');
+          audio = new Audio('arwingOneShot.mp3');
           audio.play();
           var bolt = new Bolt(laser2.model, scene, 0x00ff00);
           bolt.model.position.set(laser2.model.position.x, laser2.model.position.y, laser2.model.position.z);
