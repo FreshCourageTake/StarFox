@@ -2,7 +2,7 @@
 
 var CHARGED = 25;
 
-class Ship {
+class Arwing {
 	constructor(type, scene) {
 		var loader = new THREE.ObjectLoader();
 		var that = this;
@@ -15,7 +15,7 @@ class Ship {
     this.lasers = [];
     this.charge = 0;
   	loader.load(type, function ( obj ) {
-      // obj.scale.set(.005, .005, .005); // for arwing
+      obj.scale.set(.03, .03, .03); // for arwing
     	that.model = obj;
       scene.add( obj );
 
@@ -43,16 +43,16 @@ class Ship {
       var delta = clock.getDelta(); // seconds.
       // delta was causing jitters (probably due to floating point precision)
       var moveDistance = .05// * delta; // 200 pixels per second
-      var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
+      var rotateAngle = .031;   // pi/2 radians (90 degrees) per second
       var fix = moveDistance;
       // local transformations
 
       // move forwards/backwards and rotate left/right
-      if ( keyboard.pressed("W") ) {
+      if ( keyboard.pressed("P") ) {
         this.velocity.setDz(-moveDistance);
-        laser.velocity.setDz(-moveDistance);
+        laser2.velocity.setDz(-moveDistance);
         // this.model.translateZ( -moveDistance );
-        // laser.model.translateZ( -moveDistance );
+        // laser2.model.translateZ( -moveDistance );
 
         // var angleXZ = -Math.cos(this.orientationXZ);
         // var angleYZ = -Math.cos(this.orientationYZ);
@@ -79,20 +79,20 @@ class Ship {
 
         // // this.velocity.setDz(Math.cos(this.orientationZ));
       }
-      if ( keyboard.pressed("S") ) {
+      if ( keyboard.pressed("O") ) {
         // this.model.translateZ(  moveDistance );
-        // laser.model.translateZ( moveDistance );
+        // laser2.model.translateZ( moveDistance );
         this.velocity.setDz(moveDistance);
-        laser.velocity.setDz(moveDistance);
+        laser2.velocity.setDz(moveDistance);
       }
       // if ( keyboard.pressed("A") ) {
       //   this.model.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
-      //   laser.model.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
+      //   laser2.model.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
       //   // this.orientationXZ -= rotateAngle;
       // }
       // if ( keyboard.pressed("D") ) {
       //   this.model.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
-      //   laser.model.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
+      //   laser2.model.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
       //   // this.orientationXZ += rotateAngle;
       // }
 
@@ -104,27 +104,28 @@ class Ship {
 
       // rotate left/right/up/down
       var rotation_matrix = new THREE.Matrix4().identity();
-      if ( keyboard.pressed("I") ) {
+      if ( keyboard.pressed("T") ) {
         this.model.rotateOnAxis( new THREE.Vector3(1,0,0), rotateAngle);
-        laser.model.rotateOnAxis( new THREE.Vector3(1,0,0), rotateAngle);
+        laser2.model.rotateOnAxis( new THREE.Vector3(1,0,0), rotateAngle);
         this.orientationYZ += rotateAngle;
       }
-      if ( keyboard.pressed("K") ) {
+      if ( keyboard.pressed("G") ) {
         this.model.rotateOnAxis( new THREE.Vector3(1,0,0), -rotateAngle);
-        laser.model.rotateOnAxis( new THREE.Vector3(1,0,0), -rotateAngle);
+        laser2.model.rotateOnAxis( new THREE.Vector3(1,0,0), -rotateAngle);
         this.orientationYZ -= rotateAngle;
 
       }
-      if ( keyboard.pressed("J") ) {
+      if ( keyboard.pressed("F") ) {
         this.model.rotateOnAxis( new THREE.Vector3(0,0,1), rotateAngle * 2);
-        laser.model.rotateOnAxis( new THREE.Vector3(0,0,1), rotateAngle * 2);
+        laser2.model.rotateOnAxis( new THREE.Vector3(0,0,1), rotateAngle * 2);
       }
-      if ( keyboard.pressed("L") ) {
+      if ( keyboard.pressed("H") ) {
         this.model.rotateOnAxis( new THREE.Vector3(0,0,1), -rotateAngle * 2);
-        laser.model.rotateOnAxis( new THREE.Vector3(0,0,1), -rotateAngle * 2);
+        laser2.model.rotateOnAxis( new THREE.Vector3(0,0,1), -rotateAngle * 2);
       }
 
-      if ( keyboard.pressed("space") ) {
+      if ( keyboard.pressed("M") ) {
+        console.log("pressed B");
         this.charge++;
         if (this.charge >= CHARGED && !this.soundPlayed) {
           audio = new Audio('charge_laser.mp3');
@@ -138,13 +139,14 @@ class Ship {
       }
 
       // fire on key up so we can do charging bullets
-      if ( keyboard.up("space") ) {
+      if ( keyboard.pressed("M") ) { // TODO: Check to see that this is firing
+        console.log("here");
         if (this.charge > CHARGED + 100) {
           audio = new Audio('explosion.mp3');
           audio.play();
-          var chargedBolt = new Bolt(bullet, scene, 0xff0000); // change laser.model
-          chargedBolt.model.position.set(laser.model.position.x, laser.model.position.y, laser.model.position.z);
-          chargedBolt.model.rotation.set(laser.model.rotation.x, laser.model.rotation.y, laser.model.rotation.z);
+          var chargedBolt = new Bolt(bullet, scene, 0xff0000); // change laser2.model
+          chargedBolt.model.position.set(laser2.model.position.x, laser2.model.position.y, laser2.model.position.z);
+          chargedBolt.model.rotation.set(laser2.model.rotation.x, laser2.model.rotation.y, laser2.model.rotation.z);
           this.lasers.push(chargedBolt);
           scene.add(chargedBolt.model);
           this.charge = 0;
@@ -154,9 +156,9 @@ class Ship {
         else {
           audio = new Audio('tie_fire.mp3');
           audio.play();
-          var bolt = new Bolt(laser.model, scene, 0x00ff00);
-          bolt.model.position.set(laser.model.position.x, laser.model.position.y, laser.model.position.z);
-          bolt.model.rotation.set(laser.model.rotation.x, laser.model.rotation.y, laser.model.rotation.z);
+          var bolt = new Bolt(laser2.model, scene, 0x00ff00);
+          bolt.model.position.set(laser2.model.position.x, laser2.model.position.y, laser2.model.position.z);
+          bolt.model.rotation.set(laser2.model.rotation.x, laser2.model.rotation.y, laser2.model.rotation.z);
           this.lasers.push(bolt);
           scene.add(bolt.model);
           this.charge = 0;
@@ -171,14 +173,14 @@ class Ship {
         this.model.rotation.set(0,0,0);
       }
       
-      var relativeCameraOffset = new THREE.Vector3(0,1,6);
+      var relativeCameraOffset2 = new THREE.Vector3(0,40,150);
 
-      var cameraOffset = relativeCameraOffset.applyMatrix4( this.model.matrixWorld );
+      var cameraOffset2 = relativeCameraOffset2.applyMatrix4( this.model.matrixWorld );
 
-      camera.position.x = cameraOffset.x;
-      camera.position.y = cameraOffset.y;
-      camera.position.z = cameraOffset.z;
-      camera.lookAt( this.model.position );
+      camera2.position.x = cameraOffset2.x;
+      camera2.position.y = cameraOffset2.y;
+      camera2.position.z = cameraOffset2.z;
+      camera2.lookAt( this.model.position );
       
       // camera.updateMatrix();
       // camera.updateProjectionMatrix();

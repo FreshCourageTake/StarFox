@@ -19,8 +19,30 @@ function advance() {
     	deadLasers--;
     }
 
+    if (twoPlayer) {
+      deadLasers = 0;
+      if (arwing.lasers[0] != undefined) {
+        for (var i = 0; i < arwing.lasers.length; i++) {
+          if (arwing.lasers[i].timeAlive < 0) {
+            deadLasers++;
+            scene.remove(arwing.lasers[i].model);
+            scene.remove(arwing.lasers[i].pointLight);
+          }
+          arwing.lasers[i].advance();
+          arwing.lasers[i].model.updateMatrix();
+        }
+      }
+      while (deadLasers > 0) {
+        arwing.lasers.shift();
+        deadLasers--;
+      }
+
+    arwing.advance();
+    laser2.advance();
+    }
+
     temp.position.set(tieBomber.model.position.x, tieBomber.model.position.y, tieBomber.model.position.z);
-    skyBox.position.set(tieBomber.model.position.x, tieBomber.model.position.y, tieBomber.model.position.z);
+    // skyBox.position.set(tieBomber.model.position.x, tieBomber.model.position.y, tieBomber.model.position.z);
     tieBomber.advance();
     laser.advance();
 
@@ -72,6 +94,40 @@ function advance() {
         		}
           }
     	}
+
+      if (twoPlayer && arwing.lasers[b] != undefined && arwing.lasers[b].model != undefined && arwing.lasers[b].colBox != undefined) {
+        for(var b = 0; b < arwing.lasers.length; b++) {
+          
+          if(asteroids[a].model != undefined && arwing.lasers[b].model != undefined && arwing.lasers[b].colBox != undefined) { // Ensure creation
+            if(arwing.lasers[b].colBox.intersectsBox(asteroids[a].colBox)) {// Check collision
+                arwing.lasers[b].model.x = 1000000000000
+                delete arwing.lasers[b].colBox;
+                audio = new Audio('asteroid_explosion.mp3');
+                audio.play();
+                if (asteroids[a].type == "big") {
+                  for (var i = 0; i < 3; i++) {
+                      var rock = new medAsteroidClone(asteroids[a].model.clone());
+                      asteroids.push(rock);
+                      scene.add(rock.model);
+                    }
+                    parts.push(new ExplodeAnimation(arwing.lasers[b].model.position.x, arwing.lasers[b].model.position.y, arwing.lasers[b].model.position.z));
+                    asteroids[a].model.position.x = 10000000; 
+                } else if (asteroids[a].type == "med") {
+                    for (var i = 0; i < 4; i++) {
+                      var rock = new smallAsteroidClone(asteroids[a].model.clone());
+                      asteroids.push(rock);
+                      scene.add(rock.model);
+                    }
+                    parts.push(new ExplodeAnimation(arwing.lasers[b].model.position.x, arwing.lasers[b].model.position.y, arwing.lasers[b].model.position.z));
+                    asteroids[a].model.position.x = 10000000;                  
+                } else {
+                    parts.push(new ExplodeAnimation(arwing.lasers[b].model.position.x, arwing.lasers[b].model.position.y, arwing.lasers[b].model.position.z));
+                    asteroids[a].model.position.x = 10000000;
+                }
+            }
+          }
+      }
+      }
     }
 
     // SHIP Collision detection
@@ -88,5 +144,18 @@ function advance() {
                 audio.play();
                 asteroids[a].model.position.x = 10000000;
             }
+
+      if(asteroids[a].model != undefined && arwing.model != undefined) // Ensure creation
+        if(arwing.colBox.intersectsBox(asteroids[a].colBox)) {// Check collision
+            arwing.velocity.dx = arwing.velocity.dy = arwing.velocity.dz = 0;
+            scene.remove(arwing.model);
+            parts.push(new ExplodeAnimation(asteroids[a].model.position.x, asteroids[a].model.position.y, asteroids[a].model.position.z),
+                       new ExplodeAnimation(arwing.model.position.x, arwing.model.position.y, arwing.model.position.z, true));
+            audio = new Audio('asteroid_explosion.mp3');
+            audio.play();
+            audio = new Audio('Wilhelm-Scream.mp3');
+            audio.play();
+            asteroids[a].model.position.x = 10000000;
+        }
     }
 }

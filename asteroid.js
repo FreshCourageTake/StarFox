@@ -3,16 +3,6 @@
 class Asteroid {
 	constructor(type, scene) {
 		var that = this;
-		// var loader = new THREE.OBJLoader();
-		// loader.load(type, function ( obj ) {
-		// 	obj.traverse( function ( child ) {
-  //             if ( child instanceof THREE.Mesh ) {
-  //               child.material.color.setHex(0x302013);
-  //             }
-  //           } );    
-	 //    	that.model = obj;
-	 //    	scene.add( obj );
-  //     });
 
 			var mtlLoader = new THREE.MTLLoader();
 				mtlLoader.setBaseUrl( 'models/' );

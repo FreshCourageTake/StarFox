@@ -7,6 +7,11 @@ function draw() {
     laser.model.updateMatrix();
     temp.updateMatrix();
 
+    if (twoPlayer) {
+    arwing.model.updateMatrix();
+    laser2.model.updateMatrix();
+    }
+
     // clone the asteroids once the parent has loaded and give them a random rotation angl
     if(asteroid != undefined && needToClone==true) {
 	for(var i = 0; i < 50; i++) {

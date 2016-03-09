@@ -12,6 +12,7 @@
 
   <script src="js/OrbitControls.js"></script>
   <script src="ship.js"></script>
+  <script src="arwing.js"></script>
   <script src="asteroid.js"></script>
   <script src="asteroidClone.js"></script>
   <script src="medAsteroidClone.js"></script>
@@ -31,10 +32,13 @@
   <script>
 
     // Set up the scene, camera, and renderer as global variables.
-    var scene, camera, renderer;
+    var scene, camera, camera2, renderer;
+
+    // 2 Players?
+    var twoPlayer = true;
 
     // variables for loaded objects
-    var tieBomber, xwing, asteroid, laser, bullet, temp, skyBox, medRock = null;
+    var tieBomber, xwing, arwing, asteroid, laser, laser2, bullet, temp, skyBox, medRock = null;
 
     // array for cloned objects
     var asteroids = [];
@@ -63,12 +67,17 @@
       // Create a renderer and add it to the DOM.
       renderer = new THREE.WebGLRenderer({antialias:true});
       renderer.setSize(WIDTH, HEIGHT);
+      renderer.autoClear = false;
       document.body.appendChild(renderer.domElement);
 
       // Create a camera, zoom it out from the model a bit, and add it to the scene.
       camera = new THREE.PerspectiveCamera(45, WIDTH / HEIGHT, 0.1, 20000);
       camera.position.set(0,6,0);
       scene.add(camera);
+
+      camera2 = new THREE.PerspectiveCamera(45, WIDTH / HEIGHT, 0.1, 20000);
+      camera.position.set(0, 6, 0);
+      scene.add(camera2);
 
       // Create an event listener that resizes the renderer with the browser window.
       window.addEventListener('resize', function() {
@@ -90,6 +99,11 @@
       tieBomber = new Ship("models/tie_fighter.json", scene);
       asteroid = new Asteroid("models/Asteroid.obj", scene);
       laser = new Laser("models/lasers.json", scene);
+
+      if (twoPlayer) {
+        arwing = new Arwing("models/arwing.json", scene);
+        laser2 = new Laser("models/lasers.json", scene);
+      }
 
       var geo = new THREE.SphereGeometry(.1, 10, 8);
       var mesh = new THREE.MeshLambertMaterial({color: 0xff0000});
@@ -142,7 +156,31 @@
       advance();
       
       // Render the scene.  These lines will mess things up if put in a different function
-      renderer.render(scene, camera);
+
+      if (twoPlayer) {
+        var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
+        camera.aspect = 0.5 * SCREEN_WIDTH / SCREEN_HEIGHT;
+        camera2.aspect = 0.5 * SCREEN_WIDTH / SCREEN_HEIGHT;
+        camera.updateProjectionMatrix();
+        camera2.updateProjectionMatrix();
+        
+        // setViewport parameters:
+        //  lower_left_x, lower_left_y, viewport_width, viewport_height
+
+        renderer.setViewport( 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT );
+        renderer.clear();
+        
+        // left side
+        renderer.setViewport( 1, 1,   0.5 * SCREEN_WIDTH - 2, SCREEN_HEIGHT - 2 );
+        renderer.render( scene, camera );
+        
+        // right side
+        renderer.setViewport( 0.5 * SCREEN_WIDTH + 1, 1,   0.5 * SCREEN_WIDTH - 2, SCREEN_HEIGHT - 2 );
+        renderer.render( scene, camera2 );  
+      }
+      else
+        renderer.render(scene, camera);
+      
       controls.update();
 
 
