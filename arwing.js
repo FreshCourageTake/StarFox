@@ -16,6 +16,8 @@ class Arwing {
     this.charge = 0;
   	loader.load(type, function ( obj ) {
       obj.scale.set(.03, .03, .03); // for arwing
+      obj.position.set(0, 0, -100);
+      obj.rotateOnAxis( new THREE.Vector3(0,1,0), 3.14);
     	that.model = obj;
       scene.add( obj );
 
@@ -100,7 +102,7 @@ class Arwing {
       //   laser2.model.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
       //   // this.orientationXZ -= rotateAngle;
       // }
-      // if ( keyboard.pressed("D") ) {
+      // if ( keyboard.pressed("left") ) {
       //   this.model.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
       //   laser2.model.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
       //   // this.orientationXZ += rotateAngle;
@@ -135,7 +137,7 @@ class Arwing {
       }
 
       if ( keyboard.pressed("M") ) {
-        console.log("pressed B");
+        // console.log("pressed B");
         this.charge++;
         if (this.charge >= CHARGED && !this.soundPlayed) {
           audio = new Audio('charge_laser.mp3');
@@ -149,14 +151,15 @@ class Arwing {
       }
 
       // fire on key up so we can do charging bullets
-      if ( keyboard.pressed("M") ) { // TODO: Check to see that this is firing
-        console.log("here");
+      if ( keyboard.pressed("M") ) { //TODO: Should be keyboard.up. Fix this.
+        // console.log("here");
         if (this.charge > CHARGED + 100) {
           audio = new Audio('explosion.mp3');
           audio.play();
-          var chargedBolt = new Bolt(bullet, scene, 0xff0000); // change laser2.model
+          var chargedBolt = new Bolt(bullet, scene, 2); // TODO: Fix arwing laser light
           chargedBolt.model.position.set(laser2.model.position.x, laser2.model.position.y, laser2.model.position.z);
           chargedBolt.model.rotation.set(laser2.model.rotation.x, laser2.model.rotation.y, laser2.model.rotation.z);
+          chargedBolt.model.updateMatrix();
           this.lasers.push(chargedBolt);
           scene.add(chargedBolt.model);
           this.charge = 0;
@@ -166,7 +169,7 @@ class Arwing {
         else {
           audio = new Audio('arwingOneShot.mp3');
           audio.play();
-          var bolt = new Bolt(laser2.model, scene, 0x00ff00);
+          var bolt = new Bolt(laser2.model, scene, 2);
           bolt.model.position.set(laser2.model.position.x, laser2.model.position.y, laser2.model.position.z);
           bolt.model.rotation.set(laser2.model.rotation.x, laser2.model.rotation.y, laser2.model.rotation.z);
           this.lasers.push(bolt);

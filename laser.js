@@ -37,4 +37,9 @@ class Laser {
         this.model.translateY(this.velocity.dy);
         this.model.translateZ(this.velocity.dz);
     }
+
+    orient(obj) {
+        this.model.position.set(obj.model.position.x, obj.model.position.y, obj.model.position.z);
+        this.model.rotation.set(obj.model.rotation.x, obj.model.rotation.y, obj.model.rotation.z);
+    }
 }

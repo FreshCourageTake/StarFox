@@ -37,8 +37,14 @@ function advance() {
         deadLasers--;
       }
 
-    arwing.advance();
-    laser2.advance();
+      arwing.advance();
+      laser2.advance();
+
+      if (orientLaser2 == true && laser2 != undefined && arwing != undefined) {
+        laser2.model.position.set(arwing.model.position.x, arwing.model.position.y, arwing.model.position.z);
+        laser2.model.rotation.set(arwing.model.rotation.x, arwing.model.rotation.y, arwing.model.rotation.z);
+        orientLaser2 = false;
+      }
     }
 
     temp.position.set(tieBomber.model.position.x, tieBomber.model.position.y, tieBomber.model.position.z);
@@ -60,10 +66,17 @@ function advance() {
 	    asteroids[i].rotateMove();
     }
 
-    // LASER Collision detection
+    // LASER Collision detection for tieBomber
     var limit = asteroids.length; // avoids infinite loop when we create smaller asteroids
-    for(var a = 0; a < limit; a++) {
-    	for(var b = 0; b < tieBomber.lasers.length; b++) {
+    for(var b = 0; b < tieBomber.lasers.length; b++) {
+      //Fox v Lasers
+      if(arwing.model != undefined && tieBomber.lasers[b].model != undefined && tieBomber.lasers[b].colBox != undefined) { // Ensure creation
+        if (tieBomber.lasers[b].colBox.intersectsBox(arwing.colBox)) {
+          arwing.kill();
+        }
+      }
+      //Asteroid v Lasers
+    	for(var a = 0; a < limit; a++) {
     	    if(asteroids[a].model != undefined && tieBomber.lasers[b].model != undefined && tieBomber.lasers[b].colBox != undefined) { // Ensure creation
         		if(tieBomber.lasers[b].colBox.intersectsBox(asteroids[a].colBox)) {// Check collision
         		    tieBomber.lasers[b].model.x = 1000000000000
@@ -93,10 +106,19 @@ function advance() {
         		}
           }
     	}
+    }
 
-      if (twoPlayer && arwing.lasers[b] != undefined && arwing.lasers[b].model != undefined && arwing.lasers[b].colBox != undefined) {
-        for(var b = 0; b < arwing.lasers.length; b++) {
-          
+    // LASER Collision detection for arwing
+    var limit = asteroids.length; // avoids infinite loop when we create smaller asteroids
+    for(var b = 0; b < arwing.lasers.length; b++) {
+      //tie v Lasers
+      if(tieBomber.model != undefined && arwing.lasers[b].model != undefined && arwing.lasers[b].colBox != undefined) { // Ensure creation
+        if (arwing.lasers[b].colBox.intersectsBox(tieBomber.colBox)) {
+          tieBomber.kill();
+        }
+      }
+      //Asteroid v Lasers
+      for(var a = 0; a < limit; a++) {
           if(asteroids[a].model != undefined && arwing.lasers[b].model != undefined && arwing.lasers[b].colBox != undefined) { // Ensure creation
             if(arwing.lasers[b].colBox.intersectsBox(asteroids[a].colBox)) {// Check collision
                 arwing.lasers[b].model.x = 1000000000000
@@ -125,7 +147,6 @@ function advance() {
                 }
             }
           }
-      }
       }
     }
 
