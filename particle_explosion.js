@@ -40,10 +40,13 @@ function ExplodeAnimation(x,y,z,red)
   this.yDir = (Math.random() * movementSpeed)-(movementSpeed/2);
   this.zDir = (Math.random() * movementSpeed)-(movementSpeed/2);
 
+  this.object.material.transparent = true;
   scene.add( this.object  ); 
   
   this.update = function(){
     if (this.status == true){
+
+      this.object.material.opacity -= 0.01;
 
       this.timeAlive--;
       if (this.timeAlive < 1 ) {
