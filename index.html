@@ -34,8 +34,11 @@
     // Set up the scene, camera, and renderer as global variables.
     var scene, camera, camera2, renderer;
 
-    // 2 Players?
-    var twoPlayer = true;
+    // 1-4 players?
+    var numPlayers = 1;
+
+    // Controls
+    var pads;
 
     // variables for loaded objects
     var tieBomber, xwing, arwing, asteroid, laser, laser2, bullet, temp, skyBox, medRock = null;
@@ -100,11 +103,9 @@
       asteroid = new Asteroid("models/Asteroid.obj", scene);
       laser = new Laser("models/lasers.json", scene);
 
-      if (twoPlayer) {
-        arwing = new Arwing("models/arwing.json", scene);
-        laser2 = new Laser("models/lasers.json", scene);
-      }
-
+      arwing = new Arwing("models/arwing.json", scene);
+      laser2 = new Laser("models/lasers.json", scene);
+    
       var geo = new THREE.SphereGeometry(.1, 10, 8);
       var mesh = new THREE.MeshLambertMaterial({color: 0xff0000});
       temp = new THREE.Mesh(geo, mesh);
@@ -154,10 +155,13 @@
       draw();
       control();
       advance();
+
+			  
       
       // Render the scene.  These lines will mess things up if put in a different function
 
-      if (twoPlayer) {
+      if (numPlayers == 2) {
+	renderer.autoClear = false;
         var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
         camera.aspect = 0.5 * SCREEN_WIDTH / SCREEN_HEIGHT;
         camera2.aspect = 0.5 * SCREEN_WIDTH / SCREEN_HEIGHT;
@@ -178,9 +182,12 @@
         renderer.setViewport( 0.5 * SCREEN_WIDTH + 1, 1,   0.5 * SCREEN_WIDTH - 2, SCREEN_HEIGHT - 2 );
         renderer.render( scene, camera2 );  
       }
-      else
-        renderer.render(scene, camera);
-      
+      else {
+	renderer.autoClear = true;
+
+	renderer.render(scene, camera);
+      }      
+
       controls.update();
 
 
@@ -188,6 +195,10 @@
     }
 
   </script>
+
+  <!-- indicators of other ship -->
+  
+
   <!-- A little background music... -->
   <audio autoplay>
     <source src="star_wars.mp3" type="audio/mpeg">

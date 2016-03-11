@@ -14,29 +14,29 @@ class Arwing {
     this.soundPlayed = false;
     this.lasers = [];
     this.charge = 0;
+
+    // var sphere = new THREE.SphereGeometry( .01, 1, 8 );
+    // this.signalLight = new THREE.PointLight(0xff0000, 1, 100);
+    // this.signalLight.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0x00ff00 } ) ) );
+
   	loader.load(type, function ( obj ) {
       obj.scale.set(.03, .03, .03); // for arwing
       obj.position.set(0, 0, -100);
       obj.rotateOnAxis( new THREE.Vector3(0,1,0), 3.14);
     	that.model = obj;
       scene.add( obj );
-
+      // scene.add(that.signalLight);
       that.colBox = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3());
       that.colBox.setFromObject(that.model);
-      // that.thing = new THREE.BoundingBoxHelper(that.model);
-      // scene.add(that.thing);
       });
 	}
 
   advance() {
-    // this.model.position.z = this.model.position.z + this.velocity.dz;
     this.model.translateZ(this.velocity.dz);
     this.model.translateX(this.velocity.dx);
     this.model.translateY(this.velocity.dy);
+    // this.signalLight.position.set(this.model.position.x, this.model.position.y, this.model.position.z);
     this.colBox.setFromObject(this.model);
-    // this.thing.update();
-    // this.model.position.x = this.model.position.x + this.velocity.dx;
-    // this.model.position.y = this.model.position.y + this.velocity.dy;
   }
 
   kill() {
@@ -49,7 +49,7 @@ class Arwing {
     audio.play();
   }
 
-	keyPress() {
+    keyPress(pad) {
       keyboard.update();
 
       var delta = clock.getDelta(); // seconds.
@@ -57,87 +57,41 @@ class Arwing {
       var moveDistance = .05// * delta; // 200 pixels per second
       var rotateAngle = .031;   // pi/2 radians (90 degrees) per second
       var fix = moveDistance;
-      // local transformations
 
+      // local transformations
       // move forwards/backwards and rotate left/right
-      if ( keyboard.pressed("P") ) {
+      if ( keyboard.pressed("U") || (pad.axes[1] < -0.5)) {
         this.velocity.setDz(-moveDistance);
         laser2.velocity.setDz(-moveDistance);
-        // this.model.translateZ( -moveDistance );
-        // laser2.model.translateZ( -moveDistance );
-
-        // var angleXZ = -Math.cos(this.orientationXZ);
-        // var angleYZ = -Math.cos(this.orientationYZ);
-
-        // if (angleXZ < 0 && angleYZ < 0) {
-        //   fix = moveDistance;
-        // }
-        // else if (angleXZ > 0 && angleYZ > 0) {
-        //   fix = -moveDistance * 3;
-        // }
-
-        // // console.log( (-angleXZ + -angleYZ) * moveDistance);
-
-        // this.velocity.setDz( ((angleXZ + angleYZ) * moveDistance) + fix );
-        // console.log( (angleXZ + angleYZ) * moveDistance + " + " + fix );
-        // this.velocity.setDx(Math.sin(this.orientationXZ) * moveDistance);
-        // // console.log("Dx: " + this.velocity.dx);
-        // // console.log("Dz from xz plane: " + -Math.cos(this.orientationXZ) * moveDistance);
-
-        // // this.velocity.setDz(-Math.cos(this.orientationYZ) * moveDistance);
-        // this.velocity.setDy(Math.sin(this.orientationYZ) * moveDistance);
-        // // console.log("Dy: " + this.velocity.dy);
-        // // console.log("Dz from yz plane: " + -Math.cos(this.orientationYZ) * moveDistance);
-
-        // // this.velocity.setDz(Math.cos(this.orientationZ));
       }
-      if ( keyboard.pressed("O") ) {
-        // this.model.translateZ(  moveDistance );
-        // laser2.model.translateZ( moveDistance );
+      if ( keyboard.pressed("O") || (pad.axes[1] > 0.5)) {
         this.velocity.setDz(moveDistance);
         laser2.velocity.setDz(moveDistance);
       }
-      // if ( keyboard.pressed("A") ) {
-      //   this.model.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
-      //   laser2.model.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
-      //   // this.orientationXZ -= rotateAngle;
-      // }
-      // if ( keyboard.pressed("left") ) {
-      //   this.model.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
-      //   laser2.model.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
-      //   // this.orientationXZ += rotateAngle;
-      // }
-
-      // strafe left/right
-      // if ( keyboard.pressed("Q") )
-      //   this.model.translateX( -moveDistance );
-      // if ( keyboard.pressed("E") )
-      //   this.model.translateX(  moveDistance ); 
 
       // rotate left/right/up/down
       var rotation_matrix = new THREE.Matrix4().identity();
-      if ( keyboard.pressed("T") ) {
+      if ( keyboard.pressed("I") || (pad.axes[3] < -0.5) ) {
         this.model.rotateOnAxis( new THREE.Vector3(1,0,0), rotateAngle);
         laser2.model.rotateOnAxis( new THREE.Vector3(1,0,0), rotateAngle);
         this.orientationYZ += rotateAngle;
       }
-      if ( keyboard.pressed("G") ) {
+      if ( keyboard.pressed("K") || (pad.axes[3] > 0.5) ) {
         this.model.rotateOnAxis( new THREE.Vector3(1,0,0), -rotateAngle);
         laser2.model.rotateOnAxis( new THREE.Vector3(1,0,0), -rotateAngle);
         this.orientationYZ -= rotateAngle;
 
       }
-      if ( keyboard.pressed("F") ) {
+      if ( keyboard.pressed("J") || (pad.axes[2] < -0.5) ) {
         this.model.rotateOnAxis( new THREE.Vector3(0,0,1), rotateAngle * 2);
         laser2.model.rotateOnAxis( new THREE.Vector3(0,0,1), rotateAngle * 2);
       }
-      if ( keyboard.pressed("H") ) {
+      if ( keyboard.pressed("L") || (pad.axes[2] > 0.5) ) {
         this.model.rotateOnAxis( new THREE.Vector3(0,0,1), -rotateAngle * 2);
         laser2.model.rotateOnAxis( new THREE.Vector3(0,0,1), -rotateAngle * 2);
       }
 
-      if ( keyboard.pressed("M") ) {
-        // console.log("pressed B");
+      if ( keyboard.pressed("N") ) {
         this.charge++;
         if (this.charge >= CHARGED && !this.soundPlayed) {
           audio = new Audio('charge_laser.mp3');
@@ -146,13 +100,11 @@ class Arwing {
         }
         if (this.charge > CHARGED + 100) {
           temp.material.visible = true;
-          // alert(temp.material.visible);
         }
       }
 
       // fire on key up so we can do charging bullets
-      if ( keyboard.pressed("M") ) { //TODO: Should be keyboard.up. Fix this.
-        // console.log("here");
+      if ( keyboard.pressed("N") || (pad.buttons[7].pressed == true)) { //TODO: Should be keyboard.up. Fix this.
         if (this.charge > CHARGED + 100) {
           audio = new Audio('explosion.mp3');
           audio.play();
@@ -194,11 +146,5 @@ class Arwing {
       camera2.position.y = cameraOffset2.y;
       camera2.position.z = cameraOffset2.z;
       camera2.lookAt( this.model.position );
-      
-      // camera.updateMatrix();
-      // camera.updateProjectionMatrix();
-          
-      // controls.update();
-      // stats.update();
     }
 }

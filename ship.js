@@ -16,6 +16,7 @@ class Ship {
     this.charge = 0;
   	loader.load(type, function ( obj ) {
       // obj.scale.set(.005, .005, .005); // for arwing
+      
     	that.model = obj;
       scene.add( obj );
 
@@ -47,7 +48,7 @@ class Ship {
                 audio.play();
   }
 
-	keyPress() {
+    keyPress(pad) {
       keyboard.update();
 
       var delta = clock.getDelta(); // seconds.
@@ -58,83 +59,38 @@ class Ship {
       // local transformations
 
       // move forwards/backwards and rotate left/right
-      if ( keyboard.pressed("W") ) {
+      if ( keyboard.pressed("E") || (pad.axes[1] < -0.5)) {
         this.velocity.setDz(-moveDistance);
         laser.velocity.setDz(-moveDistance);
-        // this.model.translateZ( -moveDistance );
-        // laser.model.translateZ( -moveDistance );
-
-        // var angleXZ = -Math.cos(this.orientationXZ);
-        // var angleYZ = -Math.cos(this.orientationYZ);
-
-        // if (angleXZ < 0 && angleYZ < 0) {
-        //   fix = moveDistance;
-        // }
-        // else if (angleXZ > 0 && angleYZ > 0) {
-        //   fix = -moveDistance * 3;
-        // }
-
-        // // console.log( (-angleXZ + -angleYZ) * moveDistance);
-
-        // this.velocity.setDz( ((angleXZ + angleYZ) * moveDistance) + fix );
-        // console.log( (angleXZ + angleYZ) * moveDistance + " + " + fix );
-        // this.velocity.setDx(Math.sin(this.orientationXZ) * moveDistance);
-        // // console.log("Dx: " + this.velocity.dx);
-        // // console.log("Dz from xz plane: " + -Math.cos(this.orientationXZ) * moveDistance);
-
-        // // this.velocity.setDz(-Math.cos(this.orientationYZ) * moveDistance);
-        // this.velocity.setDy(Math.sin(this.orientationYZ) * moveDistance);
-        // // console.log("Dy: " + this.velocity.dy);
-        // // console.log("Dz from yz plane: " + -Math.cos(this.orientationYZ) * moveDistance);
-
-        // // this.velocity.setDz(Math.cos(this.orientationZ));
       }
-      if ( keyboard.pressed("S") ) {
-        // this.model.translateZ(  moveDistance );
-        // laser.model.translateZ( moveDistance );
+      if ( keyboard.pressed("Q") || (pad.axes[1] > 0.5) ) {
         this.velocity.setDz(moveDistance);
         laser.velocity.setDz(moveDistance);
       }
-      // if ( keyboard.pressed("A") ) {
-      //   this.model.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
-      //   laser.model.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
-      //   // this.orientationXZ -= rotateAngle;
-      // }
-      // if ( keyboard.pressed("D") ) {
-      //   this.model.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
-      //   laser.model.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
-      //   // this.orientationXZ += rotateAngle;
-      // }
-
-      // strafe left/right
-      // if ( keyboard.pressed("Q") )
-      //   this.model.translateX( -moveDistance );
-      // if ( keyboard.pressed("E") )
-      //   this.model.translateX(  moveDistance ); 
 
       // rotate left/right/up/down
       var rotation_matrix = new THREE.Matrix4().identity();
-      if ( keyboard.pressed("I") ) {
+      if ( keyboard.pressed("W") || (pad.axes[3] < -0.5)) {
         this.model.rotateOnAxis( new THREE.Vector3(1,0,0), rotateAngle);
         laser.model.rotateOnAxis( new THREE.Vector3(1,0,0), rotateAngle);
         this.orientationYZ += rotateAngle;
       }
-      if ( keyboard.pressed("K") ) {
+      if ( keyboard.pressed("S") || (pad.axes[3] > 0.5)) {
         this.model.rotateOnAxis( new THREE.Vector3(1,0,0), -rotateAngle);
         laser.model.rotateOnAxis( new THREE.Vector3(1,0,0), -rotateAngle);
         this.orientationYZ -= rotateAngle;
 
       }
-      if ( keyboard.pressed("J") ) {
+      if ( keyboard.pressed("A") || (pad.axes[2] < -0.5) ) {
         this.model.rotateOnAxis( new THREE.Vector3(0,0,1), rotateAngle * 2);
         laser.model.rotateOnAxis( new THREE.Vector3(0,0,1), rotateAngle * 2);
       }
-      if ( keyboard.pressed("L") ) {
+      if ( keyboard.pressed("D") || (pad.axes[2] > 0.5) ) {
         this.model.rotateOnAxis( new THREE.Vector3(0,0,1), -rotateAngle * 2);
         laser.model.rotateOnAxis( new THREE.Vector3(0,0,1), -rotateAngle * 2);
       }
 
-      if ( keyboard.pressed("space") ) {
+      if ( keyboard.pressed("space")) {
         this.charge++;
         if (this.charge >= CHARGED && !this.soundPlayed) {
           audio = new Audio('charge_laser.mp3');
@@ -148,7 +104,7 @@ class Ship {
       }
 
       // fire on key up so we can do charging bullets
-      if ( keyboard.up("space") ) {
+      if ( keyboard.up("space") || pads[0].buttons[7].pressed == true) {
         if (this.charge > CHARGED + 100) {
           audio = new Audio('explosion.mp3');
           audio.play();
