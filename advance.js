@@ -9,6 +9,7 @@ function advance() {
       		deadLasers++;
       		scene.remove(tieBomber.lasers[i].model);
       		scene.remove(tieBomber.lasers[i].pointLight);
+          tieBomber.bullets--;
       	}
         tieBomber.lasers[i].advance();
         tieBomber.lasers[i].model.updateMatrix();
@@ -27,6 +28,7 @@ function advance() {
             deadLasers++;
             scene.remove(arwing.lasers[i].model);
             scene.remove(arwing.lasers[i].pointLight);
+            arwing.bullets--;
           }
           arwing.lasers[i].advance();
           arwing.lasers[i].model.updateMatrix();

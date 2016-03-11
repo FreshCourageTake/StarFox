@@ -11,6 +11,8 @@ var parts = [];
 // http://codepen.io/Xanmia/pen/DoljI
 function ExplodeAnimation(x,y,z,red)
 {
+  this.timeAlive = 150;
+
   var geometry = new THREE.Geometry();
   
   for (i = 0; i < totalObjects; i ++) 
@@ -37,12 +39,22 @@ function ExplodeAnimation(x,y,z,red)
   this.xDir = (Math.random() * movementSpeed)-(movementSpeed/2);
   this.yDir = (Math.random() * movementSpeed)-(movementSpeed/2);
   this.zDir = (Math.random() * movementSpeed)-(movementSpeed/2);
-  
+
   scene.add( this.object  ); 
   
   this.update = function(){
     if (this.status == true){
+
+      this.timeAlive--;
+      if (this.timeAlive < 1 ) {
+          console.log("romoved stuff");
+          scene.remove(this.object);
+          this.status = false;
+      }
+      
       var pCount = totalObjects;
+      // var pCount = parts.length;
+
       while(pCount--) {
         var particle =  this.object.geometry.vertices[pCount]
         particle.y += dirs[pCount].y;

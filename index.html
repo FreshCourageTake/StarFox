@@ -37,6 +37,9 @@
     // 1-4 players?
     var numPlayers = 1;
 
+    // Hack
+    var refreshPageOnChange = false;
+
     // Controls
     var pads;
 
@@ -161,7 +164,24 @@
       // Render the scene.  These lines will mess things up if put in a different function
 
       if (numPlayers == 2) {
-	renderer.autoClear = false;
+
+        if (refreshPageOnChange == false)
+          scene.add(arwing.model);
+
+        //Hack to refresh page
+        refreshPageOnChange = true;
+
+        // rez the dead ships if killed
+        if (arwing.alive == false && (Math.floor(Math.random() * 300)) == 1 ) {
+          scene.add(arwing.model);
+          arwing.alive = true;
+        }
+        if (tieBomber.alive == false && (Math.floor(Math.random() * 300)) == 1 ) {
+          scene.add(tieBomber.model);
+          tieBomber.alive = true;
+        }
+
+	      renderer.autoClear = false;
         var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
         camera.aspect = 0.5 * SCREEN_WIDTH / SCREEN_HEIGHT;
         camera2.aspect = 0.5 * SCREEN_WIDTH / SCREEN_HEIGHT;
@@ -183,9 +203,23 @@
         renderer.render( scene, camera2 );  
       }
       else {
-	renderer.autoClear = true;
 
-	renderer.render(scene, camera);
+        // rez the ship if it dies
+        if (tieBomber.alive == false && (Math.floor(Math.random() * 300)) == 1 ) {
+          scene.add(tieBomber.model);
+          laser.model.position.set(tieBomber.model.position.x, tieBomber.model.position.y, tieBomber.model.position.z);
+          laser.model.rotation.set(tieBomber.model.rotation.x, tieBomber.model.rotation.y, tieBomber.model.rotation.z)
+          tieBomber.alive = true;
+        }
+
+        // Hacks :P
+        if (refreshPageOnChange == true) {
+          location.reload();
+        }
+
+        // scene.remove(arwing.model);
+      	renderer.autoClear = true;
+      	renderer.render(scene, camera);
       }      
 
       controls.update();

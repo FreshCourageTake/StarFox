@@ -7,6 +7,7 @@ class Ship {
 		var loader = new THREE.ObjectLoader();
 		var that = this;
     var test = null;
+    this.alive = true;
     this.velocity = new Velocity();
     this.orientationXZ = 0;
     this.orientationYZ = 0;
@@ -14,9 +15,9 @@ class Ship {
     this.soundPlayed = false;
     this.lasers = [];
     this.charge = 0;
-  	loader.load(type, function ( obj ) {
-      // obj.scale.set(.005, .005, .005); // for arwing
-      
+    this.bullets = 0;
+
+  	loader.load(type, function ( obj ) {      
     	that.model = obj;
       scene.add( obj );
 
@@ -40,12 +41,15 @@ class Ship {
 
   kill() {
     this.velocity.dx = this.velocity.dy = this.velocity.dz = 0;
-                scene.remove(this.model);
-                parts.push(new ExplodeAnimation(this.model.position.x, this.model.position.y, this.model.position.z, true));
-                audio = new Audio('asteroid_explosion.mp3');
-                audio.play();
-                audio = new Audio('Wilhelm-Scream.mp3');
-                audio.play();
+    laser.velocity.dx = laser.velocity.dy = laser.velocity.dz = 0;
+
+    scene.remove(this.model);
+    parts.push(new ExplodeAnimation(this.model.position.x, this.model.position.y, this.model.position.z, true));
+    audio = new Audio('asteroid_explosion.mp3');
+    audio.play();
+    audio = new Audio('Wilhelm-Scream.mp3');
+    audio.play();
+    this.alive = false;
   }
 
     keyPress(pad) {
@@ -56,39 +60,87 @@ class Ship {
       var moveDistance = .05// * delta; // 200 pixels per second
       var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
       var fix = moveDistance;
+      var dec = 20;
       // local transformations
 
       // move forwards/backwards and rotate left/right
-      if ( keyboard.pressed("E") || (pad.axes[1] < -0.5)) {
+      if ( keyboard.pressed("E") ) {
         this.velocity.setDz(-moveDistance);
         laser.velocity.setDz(-moveDistance);
       }
-      if ( keyboard.pressed("Q") || (pad.axes[1] > 0.5) ) {
+      if ( keyboard.pressed("Q") ) {
         this.velocity.setDz(moveDistance);
         laser.velocity.setDz(moveDistance);
+      }
+      if ( keyboard.pressed("X") ) {
+        this.model.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
+        laser.model.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
+      }
+      if ( keyboard.pressed("C") ) {
+        this.model.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
+        laser.model.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
       }
 
       // rotate left/right/up/down
       var rotation_matrix = new THREE.Matrix4().identity();
-      if ( keyboard.pressed("W") || (pad.axes[3] < -0.5)) {
+      if ( keyboard.pressed("W") ) {
         this.model.rotateOnAxis( new THREE.Vector3(1,0,0), rotateAngle);
         laser.model.rotateOnAxis( new THREE.Vector3(1,0,0), rotateAngle);
         this.orientationYZ += rotateAngle;
       }
-      if ( keyboard.pressed("S") || (pad.axes[3] > 0.5)) {
+      if ( keyboard.pressed("S") ) {
         this.model.rotateOnAxis( new THREE.Vector3(1,0,0), -rotateAngle);
         laser.model.rotateOnAxis( new THREE.Vector3(1,0,0), -rotateAngle);
         this.orientationYZ -= rotateAngle;
-
       }
-      if ( keyboard.pressed("A") || (pad.axes[2] < -0.5) ) {
+      if ( keyboard.pressed("A") ) {
         this.model.rotateOnAxis( new THREE.Vector3(0,0,1), rotateAngle * 2);
         laser.model.rotateOnAxis( new THREE.Vector3(0,0,1), rotateAngle * 2);
       }
-      if ( keyboard.pressed("D") || (pad.axes[2] > 0.5) ) {
+      if ( keyboard.pressed("D") ) {
         this.model.rotateOnAxis( new THREE.Vector3(0,0,1), -rotateAngle * 2);
         laser.model.rotateOnAxis( new THREE.Vector3(0,0,1), -rotateAngle * 2);
       }
+      
+
+      // Controller Support
+      if (pad != undefined) {
+        if (pad.buttons[5] != undefined && pad.buttons[5].pressed == true ) {
+          this.velocity.setDz(-moveDistance);
+          laser.velocity.setDz(-moveDistance);
+        }
+        if (pad.buttons[4] != undefined && pad.buttons[4].pressed == true ) {
+          this.velocity.setDz(moveDistance);
+          laser.velocity.setDz(moveDistance);
+        }
+        if ( pad.axes[2] < -0.1 ) {
+          this.model.rotateOnAxis( new THREE.Vector3(0,1,0), -pad.axes[2] / dec );
+          laser.model.rotateOnAxis( new THREE.Vector3(0,1,0), -pad.axes[2] / dec );
+        }
+        if ( pad.axes[2] > 0.1 ) {
+          this.model.rotateOnAxis( new THREE.Vector3(0,1,0), -pad.axes[2] / dec );
+          laser.model.rotateOnAxis( new THREE.Vector3(0,1,0), -pad.axes[2] / dec );
+        }
+        if ( pad.axes[3] > 0.1 ) {
+          this.model.rotateOnAxis( new THREE.Vector3(1,0,0), pad.axes[3] / dec );
+          laser.model.rotateOnAxis( new THREE.Vector3(1,0,0), pad.axes[3] / dec );
+          this.orientationYZ += rotateAngle;
+        }
+        if ( pad.axes[3] < -0.1 ) {
+          this.model.rotateOnAxis( new THREE.Vector3(1,0,0), pad.axes[3] / dec );
+          laser.model.rotateOnAxis( new THREE.Vector3(1,0,0), pad.axes[3] / dec );
+          this.orientationYZ -= rotateAngle;
+        }
+        if ( pad.axes[0] < -0.1 ) {
+          this.model.rotateOnAxis( new THREE.Vector3(0,0,1), -pad.axes[0] / (dec/2) );
+          laser.model.rotateOnAxis( new THREE.Vector3(0,0,1), -pad.axes[0] / (dec/2) );
+        }
+        if ( pad.axes[0] > 0.1 ) {
+          this.model.rotateOnAxis( new THREE.Vector3(0,0,1), -pad.axes[0] / (dec/2) );
+          laser.model.rotateOnAxis( new THREE.Vector3(0,0,1), -pad.axes[0] / (dec/2) );
+        }
+      }
+
 
       if ( keyboard.pressed("space")) {
         this.charge++;
@@ -104,7 +156,7 @@ class Ship {
       }
 
       // fire on key up so we can do charging bullets
-      if ( keyboard.up("space") || pads[0].buttons[7].pressed == true) {
+      if ( keyboard.up("space") || (pad != undefined && pad.buttons[7] != undefined && pad.buttons[7].pressed == true) ) {
         if (this.charge > CHARGED + 100) {
           audio = new Audio('explosion.mp3');
           audio.play();
@@ -118,24 +170,27 @@ class Ship {
           temp.material.visible = false;
         }
         else {
-          audio = new Audio('tie_fire.mp3');
-          audio.play();
-          var bolt = new Bolt(laser.model, scene, 0x00ff00);
-          bolt.model.position.set(laser.model.position.x, laser.model.position.y, laser.model.position.z);
-          bolt.model.rotation.set(laser.model.rotation.x, laser.model.rotation.y, laser.model.rotation.z);
-          this.lasers.push(bolt);
-          scene.add(bolt.model);
-          this.charge = 0;
-          this.soundPlayed = false;
+          if (this.bullets < 5) {
+            this.bullets++;
+            audio = new Audio('tie_fire.mp3');
+            audio.play();
+            var bolt = new Bolt(laser.model, scene, 0x00ff00);
+            bolt.model.position.set(laser.model.position.x, laser.model.position.y, laser.model.position.z);
+            bolt.model.rotation.set(laser.model.rotation.x, laser.model.rotation.y, laser.model.rotation.z);
+            this.lasers.push(bolt);
+            scene.add(bolt.model);
+            this.charge = 0;
+            this.soundPlayed = false;
+          }
         }
       }
       
       // reset ship position
-      if ( keyboard.pressed("Z") )
-      {
-        this.model.position.set(0,0,0);
-        this.model.rotation.set(0,0,0);
-      }
+      // if ( keyboard.pressed("Z") )
+      // {
+      //   this.model.position.set(0,0,0);
+      //   this.model.rotation.set(0,0,0);
+      // }
       
       var relativeCameraOffset = new THREE.Vector3(0,1,6);
 
