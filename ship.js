@@ -60,7 +60,7 @@ class Ship {
       var moveDistance = .05// * delta; // 200 pixels per second
       var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
       var fix = moveDistance;
-      var dec = 20;
+      var dec = 30;
       // local transformations
 
       // move forwards/backwards and rotate left/right
@@ -113,29 +113,29 @@ class Ship {
           this.velocity.setDz(moveDistance);
           laser.velocity.setDz(moveDistance);
         }
-        if ( pad.axes[2] < -0.1 ) {
+        if ( pad.axes[2] < -0.5 ) { // left/right
           this.model.rotateOnAxis( new THREE.Vector3(0,1,0), -pad.axes[2] / dec );
           laser.model.rotateOnAxis( new THREE.Vector3(0,1,0), -pad.axes[2] / dec );
         }
-        if ( pad.axes[2] > 0.1 ) {
+        if ( pad.axes[2] > 0.5 ) {
           this.model.rotateOnAxis( new THREE.Vector3(0,1,0), -pad.axes[2] / dec );
           laser.model.rotateOnAxis( new THREE.Vector3(0,1,0), -pad.axes[2] / dec );
         }
-        if ( pad.axes[3] > 0.1 ) {
+        if ( pad.axes[3] > 0.2 ) {
           this.model.rotateOnAxis( new THREE.Vector3(1,0,0), pad.axes[3] / dec );
           laser.model.rotateOnAxis( new THREE.Vector3(1,0,0), pad.axes[3] / dec );
           this.orientationYZ += rotateAngle;
         }
-        if ( pad.axes[3] < -0.1 ) {
+        if ( pad.axes[3] < -0.2 ) {
           this.model.rotateOnAxis( new THREE.Vector3(1,0,0), pad.axes[3] / dec );
           laser.model.rotateOnAxis( new THREE.Vector3(1,0,0), pad.axes[3] / dec );
           this.orientationYZ -= rotateAngle;
         }
-        if ( pad.axes[0] < -0.1 ) {
+        if ( pad.axes[0] < -0.2 ) {
           this.model.rotateOnAxis( new THREE.Vector3(0,0,1), -pad.axes[0] / (dec/2) );
           laser.model.rotateOnAxis( new THREE.Vector3(0,0,1), -pad.axes[0] / (dec/2) );
         }
-        if ( pad.axes[0] > 0.1 ) {
+        if ( pad.axes[0] > 0.2 ) {
           this.model.rotateOnAxis( new THREE.Vector3(0,0,1), -pad.axes[0] / (dec/2) );
           laser.model.rotateOnAxis( new THREE.Vector3(0,0,1), -pad.axes[0] / (dec/2) );
         }
@@ -170,7 +170,7 @@ class Ship {
           temp.material.visible = false;
         }
         else {
-          if (this.bullets < 5) {
+          // if (this.bullets < 5) {
             this.bullets++;
             audio = new Audio('tie_fire.mp3');
             audio.play();
@@ -181,7 +181,7 @@ class Ship {
             scene.add(bolt.model);
             this.charge = 0;
             this.soundPlayed = false;
-          }
+          // }
         }
       }
       

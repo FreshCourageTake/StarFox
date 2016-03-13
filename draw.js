@@ -7,7 +7,7 @@ function draw() {
     laser.model.updateMatrix();
     temp.updateMatrix();
 
-    var numRocks = 50;
+    var numRocks = 20;
 
     if (numPlayers == 2 && arwing != undefined) {
     arwing.model.updateMatrix();
