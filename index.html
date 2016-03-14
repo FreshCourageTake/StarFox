@@ -54,6 +54,8 @@
 
     // for sound
     var audio = null;
+    var goodLuck = false;
+    var music = false;
 
     // https://stemkoski.github.io/Three.js/Keyboard.html
     var keyboard = new KeyboardState();
@@ -224,18 +226,17 @@
 
       controls.update();
 
-
-
     }
 
   </script>
 
   <!-- indicators of other ship -->
   
-
   <!-- A little background music... -->
-  <audio autoplay>
-    <source src="star_wars.mp3" type="audio/mpeg">
+  <audio autoplay id="good_luck">
+    <source src="goodLuck.mp3" type="audio/mpeg">
+    <!-- <source src="star_wars.mp3" type="audio/mpeg" id="good_luck"> -->
   </audio>
+
 </body>
 </html>
