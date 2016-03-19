@@ -6,8 +6,11 @@
 </head>
 <body style="margin: 0;">
 
+ <canvas id="radar" height="200" width="200" style="position: absolute; bottom: 0px;"> Your Browser doesn't support canvas </canvas>
+
   <script src="three.js-master/build/three.min.js"></script>
-  <script src="three.js-master/src/loaders/ObjectLoader.js"></script>
+ <script src="js/radar.js"></script>
+ <script src="three.js-master/src/loaders/ObjectLoader.js"></script>
   <script src="three.js-master/src/loaders/JSONLoader.js"></script>
 
   <script src="js/OrbitControls.js"></script>
@@ -61,13 +64,18 @@
     var keyboard = new KeyboardState();
     var clock = new THREE.Clock();
 
+    // set up radar
+    var c = document.getElementById("radar");
+    var ctx = c.getContext("2d");
+    var maxBounds = 2000.0;
+
     init();
     gameLoop();
 
     // Sets up the scene.
     function init() {
 
-      // Create the scene and set the scene size.
+        // Create the scene and set the scene size.
       scene = new THREE.Scene();
       var WIDTH = window.innerWidth,
           HEIGHT = window.innerHeight;
@@ -157,8 +165,9 @@
       // Read more about requestAnimationFrame at http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
       requestAnimationFrame(gameLoop);
 
-      draw();
-      control();
+
+        draw();
+        control();
       advance();
 
 			  
@@ -166,6 +175,17 @@
       // Render the scene.  These lines will mess things up if put in a different function
 
       if (numPlayers == 2) {
+
+          // radar
+          var x = tieBomber.model.position.x;
+          var y = -tieBomber.model.position.z;
+          var x2 = arwing.model.position.x;
+          var y2 = -arwing.model.position.z;
+          x *= 100.0/maxBounds;
+          y *= 100.0/maxBounds;
+          x2 *= 100.0/maxBounds;
+          y2 *= 100.0/maxBounds;
+        twoRadar(x, y, x2, y2, ctx);
 
         if (refreshPageOnChange == false)
           scene.add(arwing.model);
@@ -206,6 +226,12 @@
       }
       else {
 
+          var x = tieBomber.model.position.x;
+          var y = -tieBomber.model.position.z;
+          x *= 100.0/maxBounds;
+          y *= 100.0/maxBounds;
+          radar(x, y, ctx);
+
         // rez the ship if it dies
         if (tieBomber.alive == false && (Math.floor(Math.random() * 300)) == 1 ) {
           scene.add(tieBomber.model);
@@ -234,7 +260,7 @@
   
   <!-- A little background music... -->
   <audio autoplay id="good_luck">
-    <source src="goodLuck.mp3" type="audio/mpeg">
+    <!--<source src="goodLuck.mp3" type="audio/mpeg"> -->
     <!-- <source src="star_wars.mp3" type="audio/mpeg" id="good_luck"> -->
   </audio>
 
