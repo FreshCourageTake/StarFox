@@ -8,9 +8,12 @@ class asteroidClone {
 		this.rotateY = Math.random() * 0.01;
 		this.rotateZ = Math.random() * 0.01;
 
-		this.tX = Math.random() * 0.1;
-		this.tY = Math.random() * 0.1;
-		this.tZ = Math.random() * 0.1;	
+		// this.tX = Math.random() * 0.1;
+		// this.tY = Math.random() * 0.1;
+		// this.tZ = Math.random() * 0.1;
+		this.tX = (Math.random() * ROCKSPEED) - HALFSPEED;
+		this.tY = (Math.random() * ROCKSPEED) - HALFSPEED;
+		this.tZ = (Math.random() * ROCKSPEED) - HALFSPEED;	
 		this.model = mdl;
 
 		var scaleX = 4 + Math.random() * 25;

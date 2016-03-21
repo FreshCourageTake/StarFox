@@ -8,9 +8,9 @@ class smallAsteroidClone {
 		this.rotateY = (Math.random() * 0.06) - 0.03;
 		this.rotateZ = (Math.random() * 0.06) - 0.03;
 
-		this.tX = (Math.random() * 0.06) - 0.03;
-		this.tY = (Math.random() * 0.06) - 0.03;
-		this.tZ = (Math.random() * 0.06) - 0.03;	
+		this.tX = (Math.random() * ROCKSPEED) - HALFSPEED;
+		this.tY = (Math.random() * ROCKSPEED) - HALFSPEED;
+		this.tZ = (Math.random() * ROCKSPEED) - HALFSPEED;	
 		this.model = mdl;
 		this.model.position.set(mdl.position.x + Math.random() * 10, mdl.position.y + Math.random() * 10, mdl.position.z + Math.random() * 10);
                   console.log("small made");

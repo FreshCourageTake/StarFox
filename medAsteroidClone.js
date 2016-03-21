@@ -8,9 +8,9 @@ class medAsteroidClone {
 		this.rotateY = (Math.random() * 0.04) - 0.02;
 		this.rotateZ = (Math.random() * 0.04) - 0.02;
 
-		this.tX = (Math.random() * 0.08) - 0.04;
-		this.tY = (Math.random() * 0.08) - 0.04;
-		this.tZ = (Math.random() * 0.08) - 0.04;	
+		this.tX = (Math.random() * ROCKSPEED) - HALFSPEED;
+		this.tY = (Math.random() * ROCKSPEED) - HALFSPEED;
+		this.tZ = (Math.random() * ROCKSPEED) - HALFSPEED;	
 		this.model = mdl;
 		this.model.position.set(mdl.position.x + Math.random() * 20, mdl.position.y + Math.random() * 20, mdl.position.z + Math.random() * 20);
 

@@ -40,7 +40,7 @@
     // 1-4 players?
     var numPlayers = 1;
 
-    // Hack
+    // Hack for switching from 2 player to 1
     var refreshPageOnChange = false;
 
     // Controls
@@ -48,6 +48,10 @@
 
     // variables for loaded objects
     var tieBomber, xwing, arwing, asteroid, laser, laser2, bullet, temp, skyBox, medRock = null;
+
+    // speed of asteroids
+    var ROCKSPEED = 1;
+    var HALFSPEED = .5;
 
     // array for cloned objects
     var asteroids = [];

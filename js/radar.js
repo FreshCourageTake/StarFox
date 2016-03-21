@@ -34,7 +34,7 @@ function twoRadar(x, y, x2, y2, ctx, canvas, counter, radius){
     var HEIGHT = window.innerHeight;
 
     document.getElementById("radar").style.top = "37%";
-    document.getElementById("radar").style.right = "42%";
+    document.getElementById("radar").style.right = "41%";
 
 
     var centerX = canvas.width / 2;
