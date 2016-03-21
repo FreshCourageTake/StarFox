@@ -30,8 +30,14 @@ function twoRadar(x, y, x2, y2, ctx){
     var newx2 = convertX(x2);
     var newy2 = convertY(y2);
 
-    document.getElementById("radar").style.bottom = "300px";
-    document.getElementById("radar").style.right = "685px";
+    // document.getElementById("radar").style.bottom = "300px";
+    // document.getElementById("radar").style.right = "685px";
+
+    var WIDTH = window.innerWidth;
+    var HEIGHT = window.innerHeight;
+
+    document.getElementById("radar").style.top = "37%";
+    document.getElementById("radar").style.right = "42%";
 
     ctx.fillStyle = "green";
     ctx.fillRect(0,0,200,200);
