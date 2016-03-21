@@ -6,7 +6,7 @@
 </head>
 <body style="margin: 0;">
 
- <canvas id="radar" height="200" width="200" style="position: absolute; bottom: 0px;"> Your Browser doesn't support canvas </canvas>
+ <canvas id="radar" height="230" width="230" style="position: absolute; bottom: 0px;"> Your Browser doesn't support canvas </canvas>
 
   <script src="three.js-master/build/three.min.js"></script>
  <script src="js/radar.js"></script>
@@ -68,6 +68,8 @@
     var canvas = document.getElementById("radar");
     var ctx = canvas.getContext("2d");
     var maxBounds = 2000.0;
+    var radius = 100;
+    var counter = 0;
 
     init();
     gameLoop();
@@ -185,7 +187,9 @@
           y *= 100.0/maxBounds;
           x2 *= 100.0/maxBounds;
           y2 *= 100.0/maxBounds;
-        twoRadar(x, y, x2, y2, ctx, canvas);
+          counter = counter % radius;
+        twoRadar(x, y, x2, y2, ctx, canvas, counter, radius);
+          counter++;
 
         if (refreshPageOnChange == false)
           scene.add(arwing.model);
@@ -230,7 +234,9 @@
           var y = -tieBomber.model.position.z;
           x *= 100.0/maxBounds;
           y *= 100.0/maxBounds;
-          radar(x, y, ctx, canvas);
+          counter = counter % radius;
+          radar(x, y, ctx, canvas, counter, radius);
+          counter++;
 
         // rez the ship if it dies
         if (tieBomber.alive == false && (Math.floor(Math.random() * 300)) == 1 ) {
