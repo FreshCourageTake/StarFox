@@ -23,20 +23,14 @@ class Ship {
 
       that.colBox = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3());
       that.colBox.setFromObject(that.model);
-      // that.thing = new THREE.BoundingBoxHelper(that.model);
-      // scene.add(that.thing);
       });
 	}
 
   advance() {
-    // this.model.position.z = this.model.position.z + this.velocity.dz;
     this.model.translateZ(this.velocity.dz);
     this.model.translateX(this.velocity.dx);
     this.model.translateY(this.velocity.dy);
     this.colBox.setFromObject(this.model);
-    // this.thing.update();
-    // this.model.position.x = this.model.position.x + this.velocity.dx;
-    // this.model.position.y = this.model.position.y + this.velocity.dy;
   }
 
   kill() {
@@ -151,7 +145,6 @@ class Ship {
         }
         if (this.charge > CHARGED + 100) {
           temp.material.visible = true;
-          // alert(temp.material.visible);
         }
       }
 
@@ -170,7 +163,6 @@ class Ship {
           temp.material.visible = false;
         }
         else {
-          // if (this.bullets < 5) {
             this.bullets++;
             audio = new Audio('tie_fire.mp3');
             audio.play();
@@ -185,13 +177,6 @@ class Ship {
         }
       }
       
-      // reset ship position
-      // if ( keyboard.pressed("Z") )
-      // {
-      //   this.model.position.set(0,0,0);
-      //   this.model.rotation.set(0,0,0);
-      // }
-      
       var relativeCameraOffset = new THREE.Vector3(0,1,6);
 
       var cameraOffset = relativeCameraOffset.applyMatrix4( this.model.matrixWorld );
@@ -200,11 +185,5 @@ class Ship {
       camera.position.y = cameraOffset.y;
       camera.position.z = cameraOffset.z;
       camera.lookAt( this.model.position );
-      
-      // camera.updateMatrix();
-      // camera.updateProjectionMatrix();
-          
-      // controls.update();
-      // stats.update();
     }
 }

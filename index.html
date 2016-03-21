@@ -152,7 +152,6 @@
       var materialArray = [];
       for (var i = 0; i < 6; i++)
         materialArray.push( new THREE.MeshBasicMaterial({
-          // map: THREE.ImageUtils.loadTexture( imagePrefix + "stars.png" ),
           map: THREE.ImageUtils.loadTexture( imagePrefix + directions[i] + imageSuffix ), // Use this for skybox with dif side images
           side: THREE.BackSide
         }));
@@ -218,9 +217,6 @@
         camera.updateProjectionMatrix();
         camera2.updateProjectionMatrix();
         
-        // setViewport parameters:
-        //  lower_left_x, lower_left_y, viewport_width, viewport_height
-
         renderer.setViewport( 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT );
         renderer.clear();
         
@@ -265,13 +261,10 @@
     }
 
   </script>
-
-  <!-- indicators of other ship -->
   
   <!-- A little background music... -->
   <audio autoplay id="good_luck">
-    <!--<source src="goodLuck.mp3" type="audio/mpeg"> -->
-    <!-- <source src="star_wars.mp3" type="audio/mpeg" id="good_luck"> -->
+    <source src="goodLuck.mp3" type="audio/mpeg"> 
   </audio>
 
 </body>

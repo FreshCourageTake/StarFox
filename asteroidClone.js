@@ -8,9 +8,6 @@ class asteroidClone {
 		this.rotateY = Math.random() * 0.01;
 		this.rotateZ = Math.random() * 0.01;
 
-		// this.tX = Math.random() * 0.1;
-		// this.tY = Math.random() * 0.1;
-		// this.tZ = Math.random() * 0.1;
 		this.tX = (Math.random() * ROCKSPEED) - HALFSPEED;
 		this.tY = (Math.random() * ROCKSPEED) - HALFSPEED;
 		this.tZ = (Math.random() * ROCKSPEED) - HALFSPEED;	
@@ -19,12 +16,9 @@ class asteroidClone {
 		var scaleX = 4 + Math.random() * 25;
 		var scaleY = 4 + Math.random() * 25;
 		var scaleZ = 4 + Math.random() * 25;
-		// this.model.scale.set(scaleX, scaleY, scaleZ);
 		
 		this.colBox = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3());
 		this.colBox.setFromObject(this.model);
-		// this.thing = new THREE.BoundingBoxHelper(this.model);
-		// scene.add(this.thing);
     }
 
     rotateMove() {
@@ -38,6 +32,5 @@ class asteroidClone {
 			this.colBox.setFromObject(this.model);
 			this.colBox.expandByScalar(-20);
 		}
-		// this.thing.update();
     }
 }

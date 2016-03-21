@@ -92,9 +92,6 @@ function advance() {
       arwing.advance();
       laser2.advance();
 
-      // if (arwing.model.position.z > 1400)
-      //   arwing.model.postion.z = -1400;
-
       if (orientLaser2 == true && laser2 != undefined && arwing != undefined) {
         laser2.model.position.set(arwing.model.position.x, arwing.model.position.y, arwing.model.position.z);
         laser2.model.rotation.set(arwing.model.rotation.x, arwing.model.rotation.y, arwing.model.rotation.z);
@@ -116,8 +113,6 @@ function advance() {
     }
 
     // rotate and update the asteroids
-    // Using an asteroid class will make this much smoother.  Take an object as the constructor parameter.
-    //    Include: rotation, velocity, size.
     for (var i = 0; i < asteroids.length; i++) {
 	if(asteroids[i].model.rotation.x != undefined)
 	    asteroids[i].rotateMove();
@@ -227,28 +222,16 @@ function advance() {
     for (var a = 0; a < asteroids.length; a++) {
       if(asteroids[a].model != undefined && tieBomber.model != undefined) // Ensure creation
             if(tieBomber.colBox.intersectsBox(asteroids[a].colBox)) {// Check collision
-                // tieBomber.velocity.dx = tieBomber.velocity.dy = tieBomber.velocity.dz = 0;
-                // scene.remove(tieBomber.model);
                 tieBomber.kill();
                 parts.push(new ExplodeAnimation(asteroids[a].model.position.x, asteroids[a].model.position.y, asteroids[a].model.position.z));
-                // audio = new Audio('asteroid_explosion.mp3');
-                // audio.play();
-                // audio = new Audio('Wilhelm-Scream.mp3');
-                // audio.play();
                 asteroids[a].model.position.x = 10000000;
             }
 	
 	if(numPlayers == 2) {
 	    if(asteroids[a].model != undefined && arwing.model != undefined) // Ensure creation
 		if(arwing.colBox.intersectsBox(asteroids[a].colBox)) {// Check collision
-		    // arwing.velocity.dx = arwing.velocity.dy = arwing.velocity.dz = 0;
-		    // scene.remove(arwing.model);
 		    arwing.kill();
 		    parts.push(new ExplodeAnimation(asteroids[a].model.position.x, asteroids[a].model.position.y, asteroids[a].model.position.z));
-		    // audio = new Audio('asteroid_explosion.mp3');
-		    // audio.play();
-		    // audio = new Audio('fox-ahhh.mp3');
-		    // audio.play();
 		    asteroids[a].model.position.x = 10000000;
 		}
 	}

@@ -24,7 +24,4 @@ function draw() {
     	}
     	needToClone = false;
     }
-
-    // Render the scene.
-    // renderer.render(scene, camera);
 }

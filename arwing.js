@@ -17,17 +17,11 @@ class Arwing {
     this.alive = true;
     this.bullets = 0;
 
-    // var sphere = new THREE.SphereGeometry( .01, 1, 8 );
-    // this.signalLight = new THREE.PointLight(0xff0000, 1, 100);
-    // this.signalLight.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0x00ff00 } ) ) );
-
   	loader.load(type, function ( obj ) {
       obj.scale.set(.03, .03, .03); // for arwing
       obj.position.set(0, 0, -100);
       obj.rotateOnAxis( new THREE.Vector3(0,1,0), 3.14);
     	that.model = obj;
-      // scene.add( obj );
-      // scene.add(that.signalLight);
       that.colBox = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3());
       that.colBox.setFromObject(that.model);
       });
@@ -37,7 +31,6 @@ class Arwing {
     this.model.translateZ(this.velocity.dz);
     this.model.translateX(this.velocity.dx);
     this.model.translateY(this.velocity.dy);
-    // this.signalLight.position.set(this.model.position.x, this.model.position.y, this.model.position.z);
     this.colBox.setFromObject(this.model);
   }
 
@@ -63,38 +56,6 @@ class Arwing {
       var fix = moveDistance;
       var dec = 30;
 
-      // local transformations
-      // move forwards/backwards and rotate left/right
-      // if ( keyboard.pressed("U") || (pad.axes[1] < -0.5)) {
-      //   this.velocity.setDz(-moveDistance);
-      //   laser2.velocity.setDz(-moveDistance);
-      // }
-      // if ( keyboard.pressed("O") || (pad.axes[1] > 0.5)) {
-      //   this.velocity.setDz(moveDistance);
-      //   laser2.velocity.setDz(moveDistance);
-      // }
-
-      // // rotate left/right/up/down
-      // var rotation_matrix = new THREE.Matrix4().identity();
-      // if ( keyboard.pressed("I") || (pad.axes[3] < -0.5) ) {
-      //   this.model.rotateOnAxis( new THREE.Vector3(1,0,0), rotateAngle);
-      //   laser2.model.rotateOnAxis( new THREE.Vector3(1,0,0), rotateAngle);
-      //   this.orientationYZ += rotateAngle;
-      // }
-      // if ( keyboard.pressed("K") || (pad.axes[3] > 0.5) ) {
-      //   this.model.rotateOnAxis( new THREE.Vector3(1,0,0), -rotateAngle);
-      //   laser2.model.rotateOnAxis( new THREE.Vector3(1,0,0), -rotateAngle);
-      //   this.orientationYZ -= rotateAngle;
-
-      // }
-      // if ( keyboard.pressed("J") || (pad.axes[2] < -0.5) ) {
-      //   this.model.rotateOnAxis( new THREE.Vector3(0,0,1), rotateAngle * 2);
-      //   laser2.model.rotateOnAxis( new THREE.Vector3(0,0,1), rotateAngle * 2);
-      // }
-      // if ( keyboard.pressed("L") || (pad.axes[2] > 0.5) ) {
-      //   this.model.rotateOnAxis( new THREE.Vector3(0,0,1), -rotateAngle * 2);
-      //   laser2.model.rotateOnAxis( new THREE.Vector3(0,0,1), -rotateAngle * 2);
-      // }
       // move forwards/backwards and rotate left/right
       if ( keyboard.pressed("O") ) {
         this.velocity.setDz(-moveDistance);
@@ -201,7 +162,6 @@ class Arwing {
           temp.material.visible = false;
         }
         else {
-          // if (this.bullets < 5) {
             this.bullets++;
             audio = new Audio('arwingOneShot.mp3');
             audio.play();
@@ -215,13 +175,6 @@ class Arwing {
           // }
         }
       }
-      
-      // reset ship position
-      // if ( keyboard.pressed("Z") )
-      // {
-      //   this.model.position.set(0,0,0);
-      //   this.model.rotation.set(0,0,0);
-      // }
       
       var relativeCameraOffset2 = new THREE.Vector3(0,40,150);
 
