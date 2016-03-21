@@ -65,8 +65,8 @@
     var clock = new THREE.Clock();
 
     // set up radar
-    var c = document.getElementById("radar");
-    var ctx = c.getContext("2d");
+    var canvas = document.getElementById("radar");
+    var ctx = canvas.getContext("2d");
     var maxBounds = 2000.0;
 
     init();
@@ -185,7 +185,7 @@
           y *= 100.0/maxBounds;
           x2 *= 100.0/maxBounds;
           y2 *= 100.0/maxBounds;
-        twoRadar(x, y, x2, y2, ctx);
+        twoRadar(x, y, x2, y2, ctx, canvas);
 
         if (refreshPageOnChange == false)
           scene.add(arwing.model);
@@ -230,7 +230,7 @@
           var y = -tieBomber.model.position.z;
           x *= 100.0/maxBounds;
           y *= 100.0/maxBounds;
-          radar(x, y, ctx);
+          radar(x, y, ctx, canvas);
 
         // rez the ship if it dies
         if (tieBomber.alive == false && (Math.floor(Math.random() * 300)) == 1 ) {
