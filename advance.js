@@ -1,5 +1,9 @@
 "use strict";
 
+function deg2rad(value) {
+  return ((3.14159 / 180) * (value))
+}
+
 function advance() {
     // play sounds
     var sound = document.getElementById("good_luck");
@@ -30,7 +34,33 @@ function advance() {
     	deadLasers--;
     }
 
+    // wrapping for tieBomber
+    var shipPosZ = 0 + tieBomber.model.position.z * Math.cos(deg2rad(tieBomber.model.rotation.z));
+    var shipPosX = 0 + tieBomber.model.position.x * Math.cos(deg2rad(tieBomber.model.rotation.z));
+    var boundPos = 900;
+    console.log(shipPosX + " " + shipPosZ + " " + boundPos);
+    if (-shipPosX > boundPos || shipPosX > boundPos)
+      tieBomber.model.position.x *= -1;
+    if (-shipPosZ > boundPos || shipPosZ > boundPos)
+      tieBomber.model.position.z *= -1;
+    if (tieBomber.model.position.y > 900 || tieBomber.model.position.y < -900)
+      tieBomber.model.position.y *= -1;
+
     if (numPlayers == 2) {
+
+      // wrapping for arwing
+      var shipPosZ = 0 + arwing.model.position.z * Math.cos(deg2rad(arwing.model.rotation.z));
+      var shipPosX = 0 + arwing.model.position.x * Math.cos(deg2rad(arwing.model.rotation.z));
+      var boundPos = 900;
+      console.log(shipPosX + " " + shipPosZ + " " + boundPos);
+      if (-shipPosX > boundPos || shipPosX > boundPos)
+        arwing.model.position.x *= -1;
+      if (-shipPosZ > boundPos || shipPosZ > boundPos)
+        arwing.model.position.z *= -1;
+      if (arwing.model.position.y > 900 || arwing.model.position.y < -900)
+        arwing.model.position.y *= -1;
+
+      // laser clean up
       deadLasers = 0;
       if (arwing != undefined && arwing.lasers[0] != undefined) {
         for (var i = 0; i < arwing.lasers.length; i++) {
@@ -51,6 +81,9 @@ function advance() {
 
       arwing.advance();
       laser2.advance();
+
+      // if (arwing.model.position.z > 1400)
+      //   arwing.model.postion.z = -1400;
 
       if (orientLaser2 == true && laser2 != undefined && arwing != undefined) {
         laser2.model.position.set(arwing.model.position.x, arwing.model.position.y, arwing.model.position.z);
