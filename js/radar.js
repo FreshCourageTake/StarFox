@@ -24,14 +24,11 @@ function convertY(y){
     return y;
 }
 
-function twoRadar(x, y, x2, y2, ctx, canvas){
+function twoRadar(x, y, x2, y2, ctx, canvas, counter, radius){
     var newx = convertX(x);
     var newy = convertY(y);
     var newx2 = convertX(x2);
     var newy2 = convertY(y2);
-
-    // document.getElementById("radar").style.bottom = "300px";
-    // document.getElementById("radar").style.right = "685px";
 
     var WIDTH = window.innerWidth;
     var HEIGHT = window.innerHeight;
@@ -39,12 +36,9 @@ function twoRadar(x, y, x2, y2, ctx, canvas){
     document.getElementById("radar").style.top = "37%";
     document.getElementById("radar").style.right = "42%";
 
-    //ctx.fillStyle = "blue"
-    //ctx.fillRect(0,0,200,200);
 
     var centerX = canvas.width / 2;
     var centerY = canvas.height / 2;
-    var radius = 70;
 
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
@@ -80,10 +74,14 @@ function twoRadar(x, y, x2, y2, ctx, canvas){
     ctx.font = "10px Arial";
     ctx.strokeText("2",newx2-3,newy2+13);
 
+    // expanding circle
+    ctx.beginPath();
+    ctx.arc(115,115,counter,0,2*Math.PI);
+    ctx.stroke();
 }
 
 
-function radar(x, y, ctx, canvas) {
+function radar(x, y, ctx, canvas, counter, radius) {
     // real world to canvas coordinate conversion
     // -99, 99 -> 1, 1          99, 99 -> 199, 1
     //              0,0 -> 100, 100
@@ -96,7 +94,7 @@ function radar(x, y, ctx, canvas) {
     //ctx.fillRect(0,0,200,200);
     var centerX = canvas.width / 2;
     var centerY = canvas.height / 2;
-    var radius = 70;
+    //var radius = 100;
 
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
@@ -119,4 +117,8 @@ function radar(x, y, ctx, canvas) {
     ctx.font = "10px Arial";
     ctx.strokeText("1",newx-3,newy+13);
 
+    // expanding circle
+    ctx.beginPath();
+    ctx.arc(115,115,counter,0,2*Math.PI);
+    ctx.stroke();
 }
