@@ -24,7 +24,7 @@ function convertY(y){
     return y;
 }
 
-function twoRadar(x, y, x2, y2, ctx){
+function twoRadar(x, y, x2, y2, ctx, canvas){
     var newx = convertX(x);
     var newy = convertY(y);
     var newx2 = convertX(x2);
@@ -39,8 +39,21 @@ function twoRadar(x, y, x2, y2, ctx){
     document.getElementById("radar").style.top = "37%";
     document.getElementById("radar").style.right = "42%";
 
-    ctx.fillStyle = "green";
-    ctx.fillRect(0,0,200,200);
+    //ctx.fillStyle = "blue"
+    //ctx.fillRect(0,0,200,200);
+
+    var centerX = canvas.width / 2;
+    var centerY = canvas.height / 2;
+    var radius = 70;
+
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+    ctx.fillStyle = 'green';
+    ctx.fill();
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = '#003300';
+    ctx.stroke();
+
     ctx.beginPath();
     ctx.lineWidth = 3;
 
@@ -70,7 +83,7 @@ function twoRadar(x, y, x2, y2, ctx){
 }
 
 
-function radar(x, y, ctx) {
+function radar(x, y, ctx, canvas) {
     // real world to canvas coordinate conversion
     // -99, 99 -> 1, 1          99, 99 -> 199, 1
     //              0,0 -> 100, 100
@@ -79,8 +92,20 @@ function radar(x, y, ctx) {
     var newx = convertX(x);
     var newy = convertY(y);
 
-    ctx.fillStyle = "green";
-    ctx.fillRect(0,0,200,200);
+    //ctx.fillStyle = "blue
+    //ctx.fillRect(0,0,200,200);
+    var centerX = canvas.width / 2;
+    var centerY = canvas.height / 2;
+    var radius = 70;
+
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+    ctx.fillStyle = 'green';
+    ctx.fill();
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = '#003300';
+    ctx.stroke();
+
     ctx.beginPath();
     ctx.lineWidth = 3;
 
