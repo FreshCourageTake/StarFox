@@ -34,10 +34,48 @@ function advance() {
     	deadLasers--;
     }
 
+    var numRocks = asteroids.length;
+    for (var a = 0; a < numRocks; ++a) {
+      //wrapping
+        if (asteroids[a].model != undefined) {
+          var rockPosZ = 0 + asteroids[a].model.position.z * Math.cos(deg2rad(asteroids[a].model.rotation.z));
+          var rockPosX = 0 + asteroids[a].model.position.x * Math.cos(deg2rad(asteroids[a].model.rotation.z));
+          var boundPos = HALFWORLD;
+          console.log(-rockPosX);
+
+          if (-rockPosX > boundPos) {
+            asteroids[a].model.position.x *= -1;
+            asteroids[a].model.position.x -= 10;
+          }
+          else if ( rockPosX < -boundPos) {
+            asteroids[a].model.position.x *= -1;
+            asteroids[a].model.position.x += 10;
+          }
+          if (-rockPosZ > boundPos) {
+            asteroids[a].model.position.z *= -1;
+            asteroids[a].model.position.z -= 10;
+          }
+          else if ( rockPosZ < -boundPos) {
+            asteroids[a].model.position.z *= -1;
+            asteroids[a].model.position.z += 10;
+          }
+          if (asteroids[a].model.position.y < -HALFWORLD) {
+            asteroids[a].model.position.y *= -1;
+            asteroids[a].model.position.z *= -1;
+            asteroids[a].model.position.x *= -1;
+          }
+          else if (asteroids[a].model.position.y > HALFWORLD) {
+            asteroids[a].model.position.y *= -1;
+            asteroids[a].model.position.z *= -1;
+            asteroids[a].model.position.x *= -1;
+          }
+        }
+    }
+
     // wrapping for tieBomber
     var shipPosZ = 0 + tieBomber.model.position.z * Math.cos(deg2rad(tieBomber.model.rotation.z));
     var shipPosX = 0 + tieBomber.model.position.x * Math.cos(deg2rad(tieBomber.model.rotation.z));
-    var boundPos = 900;
+    var boundPos = HALFWORLD;
     if (-shipPosX > boundPos || shipPosX > boundPos) {
       tieBomber.model.position.x *= -1;
       laser.model.position.x *= -1;
@@ -46,7 +84,7 @@ function advance() {
       tieBomber.model.position.z *= -1;
       laser.model.position.z *= -1;
     }
-    if (tieBomber.model.position.y > 900 || tieBomber.model.position.y < -900) {
+    if (tieBomber.model.position.y > HALFWORLD || tieBomber.model.position.y < -HALFWORLD) {
       tieBomber.model.position.y *= -1;
       laser.model.position.y *= -1;
     }
@@ -56,7 +94,7 @@ function advance() {
       // wrapping for arwing
       var shipPosZ = 0 + arwing.model.position.z * Math.cos(deg2rad(arwing.model.rotation.z));
       var shipPosX = 0 + arwing.model.position.x * Math.cos(deg2rad(arwing.model.rotation.z));
-      var boundPos = 900;
+      var boundPos = HALFWORLD;
       if (-shipPosX > boundPos || shipPosX > boundPos) {
         arwing.model.position.x *= -1;
         laser2.model.position.x *= -1;
@@ -65,7 +103,7 @@ function advance() {
         arwing.model.position.z *= -1;
         laser2.model.position.z *= -1;
       }
-      if (arwing.model.position.y > 900 || arwing.model.position.y < -900) {
+      if (arwing.model.position.y > HALFWORLD || arwing.model.position.y < -HALFWORLD) {
         arwing.model.position.y *= -1;
         laser2.model.position.y *= -1;
       }
@@ -129,20 +167,6 @@ function advance() {
       }
       //Asteroid v Lasers
     	for(var a = 0; a < limit; a++) {
-
-        //wrapping
-        if (asteroids[a].model != undefined) {
-          var rockPosZ = 0 + asteroids[a].model.position.z * Math.cos(deg2rad(asteroids[a].model.rotation.z));
-          var rockPosX = 0 + asteroids[a].model.position.x * Math.cos(deg2rad(asteroids[a].model.rotation.z));
-          var boundPos = 900;
-          if (-rockPosX > boundPos || rockPosX > boundPos)
-            asteroids[a].model.position.x *= -1;
-          if (-rockPosZ > boundPos || rockPosZ > boundPos)
-            asteroids[a].model.position.z *= -1;
-          if (asteroids[a].model.position.y > 900 || asteroids[a].model.position.y < -900)
-            asteroids[a].model.position.y *= -1;
-        }
-
     	    if(asteroids[a].model != undefined && tieBomber.lasers[b].model != undefined && tieBomber.lasers[b].colBox != undefined) { // Ensure creation
         		if(tieBomber.lasers[b].colBox.intersectsBox(asteroids[a].colBox)) {// Check collision
         		    tieBomber.lasers[b].model.x = 1000000000000

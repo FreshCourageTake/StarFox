@@ -50,7 +50,7 @@ function ExplodeAnimation(x,y,z,red)
 
       this.timeAlive--;
       if (this.timeAlive < 1 ) {
-          console.log("romoved stuff");
+          console.log("removed stuff");
           scene.remove(this.object);
           this.status = false;
       }

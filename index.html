@@ -49,9 +49,12 @@
     // variables for loaded objects
     var tieBomber, xwing, arwing, asteroid, laser, laser2, bullet, temp, skyBox, medRock = null;
 
-    // speed of asteroids
-    var ROCKSPEED = 1;
-    var HALFSPEED = .5;
+    // speed of asteroids and ships
+    var ROCKSPEED = 2;
+    var HALFSPEED = 1;
+    var maxShipSpeed = 1;
+    var WORLDSPACE = 500;
+    var HALFWORLD = 250;
 
     // array for cloned objects
     var asteroids = [];
@@ -71,7 +74,7 @@
     // set up radar
     var canvas = document.getElementById("radar");
     var ctx = canvas.getContext("2d");
-    var maxBounds = 2000.0;
+    var maxBounds = 350.0;
     var radius = 100;
     var counter = 0;
 

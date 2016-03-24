@@ -59,12 +59,16 @@ class Ship {
 
       // move forwards/backwards and rotate left/right
       if ( keyboard.pressed("E") ) {
-        this.velocity.setDz(-moveDistance);
-        laser.velocity.setDz(-moveDistance);
+        if (this.velocity.dz > -maxShipSpeed) {
+          this.velocity.setDz(-moveDistance);
+          laser.velocity.setDz(-moveDistance);
+        }
       }
       if ( keyboard.pressed("Q") ) {
-        this.velocity.setDz(moveDistance);
-        laser.velocity.setDz(moveDistance);
+        if (this.velocity.dz < maxShipSpeed) {
+          this.velocity.setDz(moveDistance);
+          laser.velocity.setDz(moveDistance);
+        }
       }
       if ( keyboard.pressed("X") ) {
         this.model.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
@@ -100,12 +104,16 @@ class Ship {
       // Controller Support
       if (pad != undefined) {
         if (pad.buttons[5] != undefined && pad.buttons[5].pressed == true ) {
-          this.velocity.setDz(-moveDistance);
-          laser.velocity.setDz(-moveDistance);
+        if (this.velocity.dz > -maxShipSpeed) {
+            this.velocity.setDz(-moveDistance);
+            laser.velocity.setDz(-moveDistance);
+          }
         }
         if (pad.buttons[4] != undefined && pad.buttons[4].pressed == true ) {
-          this.velocity.setDz(moveDistance);
-          laser.velocity.setDz(moveDistance);
+        if (this.velocity.dz < maxShipSpeed) {
+            this.velocity.setDz(moveDistance);
+            laser.velocity.setDz(moveDistance);
+          }
         }
         if ( pad.axes[2] < -0.5 ) { // left/right
           this.model.rotateOnAxis( new THREE.Vector3(0,1,0), -pad.axes[2] / dec );

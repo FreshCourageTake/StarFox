@@ -58,12 +58,16 @@ class Arwing {
 
       // move forwards/backwards and rotate left/right
       if ( keyboard.pressed("O") ) {
-        this.velocity.setDz(-moveDistance);
-        laser2.velocity.setDz(-moveDistance);
+        if (this.velocity.dz > -maxShipSpeed) {
+          this.velocity.setDz(-moveDistance);
+          laser2.velocity.setDz(-moveDistance);
+        }
       }
       if ( keyboard.pressed("U") ) {
-        this.velocity.setDz(moveDistance);
-        laser2.velocity.setDz(moveDistance);
+        if (this.velocity.dz < maxShipSpeed) {
+          this.velocity.setDz(moveDistance);
+          laser2.velocity.setDz(moveDistance);
+        }
       }
       if ( keyboard.pressed(">") ) {
         this.model.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
@@ -99,12 +103,16 @@ class Arwing {
       // Controller Support
       if (pad != undefined) {
         if (pad.buttons[5] != undefined && pad.buttons[5].pressed == true ) {
-          this.velocity.setDz(-moveDistance);
-          laser2.velocity.setDz(-moveDistance);
+        if (this.velocity.dz > -maxShipSpeed) {
+            this.velocity.setDz(-moveDistance);
+            laser2.velocity.setDz(-moveDistance);
+          }
         }
         if (pad.buttons[4] != undefined && pad.buttons[4].pressed == true ) {
-          this.velocity.setDz(moveDistance);
-          laser2.velocity.setDz(moveDistance);
+        if (this.velocity.dz < maxShipSpeed) {
+            this.velocity.setDz(moveDistance);
+            laser2.velocity.setDz(moveDistance);
+          }
         }
         if ( pad.axes[2] < -0.5 ) {
           this.model.rotateOnAxis( new THREE.Vector3(0,1,0), -pad.axes[2] / dec );
