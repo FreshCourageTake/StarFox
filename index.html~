@@ -161,7 +161,7 @@
           side: THREE.BackSide
         }));
       var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
-      skyBoxSpace = new THREE.Mesh( skyGeometry, skyMaterial );
+      skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
 //      scene.add( skyBox );
 
 
@@ -170,7 +170,7 @@
       // build the skybox Mesh for Land
       imagePrefix = "images/land_";
       var directions  = ["right1", "left2", "top3", "bottom4", "front5", "back6" ];  // Use this for skybox with dif side images
-      skyGeometry = new THREE.CubeGeometry( 1500, 300, 1500 ); 
+      skyGeometry = new THREE.CubeGeometry( 1500, 1500, 1500 ); 
       
       materialArray = [];
       for (var i = 0; i < 6; i++)

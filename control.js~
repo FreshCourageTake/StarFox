@@ -16,19 +16,4 @@ function control() {
     else if(keyboard.pressed("1")) {
 	numPlayers = 1;
     }
- 
-    if (keyboard.pressed("3"))  {
-	scene.remove(skyBox);
-	skyBox = skyBoxSpace;
-	scene.add(skyBox);
-    }
-    else if(keyboard.pressed("4")) {
-	scene.remove(skyBox);
-	skyBox = skyBoxLand;
-	scene.add(skyBox);
-    }
-
-
-
-
 }
