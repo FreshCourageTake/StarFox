@@ -28,9 +28,9 @@ class Asteroid {
 	clone() {
 		if (this.model != undefined) {
 	        var newAsteroid = this.model.clone();
-	        newAsteroid.position.set(Math.floor((Math.random() * 1000) - 500), 
-	                                       Math.floor((Math.random() * 1000) - 500),
-	                                       Math.floor((Math.random() * 1000) - 500));
+	        newAsteroid.position.set(Math.floor((Math.random() * WORLDSPACE) - HALFWORLD), 
+	                                       Math.floor((Math.random() * WORLDSPACE) - HALFWORLD),
+	                                       Math.floor((Math.random() * WORLDSPACE) - HALFWORLD));
 	    }
 		return newAsteroid;        
 	}
