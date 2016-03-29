@@ -6,7 +6,7 @@
 </head>
 <body style="margin: 0;">
 
- <canvas id="radar" height="230" width="230" style="position: absolute; bottom: 0px;"> Your Browser doesn't support canvas </canvas>
+ <canvas id="radar" height="200" width="200" style="position: absolute; bottom: 0px;"> Your Browser doesn't support canvas </canvas>
 
   <script src="three.js-master/build/three.min.js"></script>
  <script src="js/radar.js"></script>
@@ -220,7 +220,7 @@
           x2 *= 100.0/maxBounds;
           y2 *= 100.0/maxBounds;
           counter = counter % radius;
-        twoRadar(x, y, x2, y2, ctx, canvas, counter, radius);
+        twoRadar(x, y, x2, y2, ctx, canvas, counter, radius, asteroids, maxBounds);
           counter++;
 
         if (refreshPageOnChange == false)
@@ -264,7 +264,10 @@
           x *= 100.0/maxBounds;
           y *= 100.0/maxBounds;
           counter = counter % radius;
-          radar(x, y, ctx, canvas, counter, radius);
+
+          radar(x, y, ctx, canvas, counter, radius, asteroids, maxBounds);
+
+
           counter++;
 
         // rez the ship if it dies
