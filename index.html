@@ -47,8 +47,10 @@
     var pads;
 
     // variables for loaded objects
+    var tieBomber, xwing, arwing, asteroid, laser, laser2, bullet, temp, skyBox, skyBoxSpace, skyBoxLand, medRock = null;
 
-   var tieBomber, xwing, arwing, asteroid, laser, laser2, bullet, temp, skyBox, skyBoxSpace, skyBoxLand, medRock = null;
+    // used for logic determining controls and asteroids in different worlds
+    var SKYVAL = 0;
 
     // speed of asteroids and ships
     var ROCKSPEED = 2;
@@ -162,7 +164,7 @@
         }));
       var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
       skyBoxSpace = new THREE.Mesh( skyGeometry, skyMaterial );
-//      scene.add( skyBox );
+      scene.add( skyBoxSpace );
 
 
 
@@ -180,7 +182,7 @@
         }));
       var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
       skyBoxLand = new THREE.Mesh( skyGeometry, skyMaterial );
-      scene.add( skyBoxLand );
+      // scene.add( skyBoxLand );
       skyBox = skyBoxLand;
 
 

@@ -1,6 +1,9 @@
 "use strict";
 
 var CHARGED = 25;
+var oldZ = 0;
+var oldY = 0;
+var oldX = 0;
 
 class Ship {
 	constructor(type, scene) {
@@ -85,20 +88,48 @@ class Ship {
         this.model.rotateOnAxis( new THREE.Vector3(1,0,0), rotateAngle);
         laser.model.rotateOnAxis( new THREE.Vector3(1,0,0), rotateAngle);
         this.orientationYZ += rotateAngle;
+        oldX = this.model.rotation._x;
+        oldY = this.model.rotation._y;
+        oldZ = this.model.rotation._z;
       }
+      // if (keyboard.up("W") ) {
+      //   // this.model.rotation.set(oldX, oldY, oldZ);
+      //   // if (this.model.rotation.x < 3.1415 && this.model.rotation.x > 0)
+      //   //   this.model.rotation.set(-0,this.model.rotation.y,-0);
+      //   // else if (this.model.rotation.x == 0)
+      //   //   this.model.rotation.set(0,this.model.rotation.y,0);
+      //   // else if (this.model.rotation > 0)
+      //   //   this.model.rotation.set(3.14159, this.model.rotation,3.14159);
+      //   // else if (this.model.rotation < 0)
+      //   //   this.model.rotation.set(-3.14159, this.model.rotation,-3.14159);                    
+      // }
       if ( keyboard.pressed("S") ) {
         this.model.rotateOnAxis( new THREE.Vector3(1,0,0), -rotateAngle);
         laser.model.rotateOnAxis( new THREE.Vector3(1,0,0), -rotateAngle);
         this.orientationYZ -= rotateAngle;
       }
+      // if (keyboard.up("S") ) {
+      //   // if (this.model.rotation.z > 0)
+      //     // this.model.rotation.set(0,this.model.rotation.y,0);
+      //   // else
+      //     // this.model.rotation.set(3.14159,this.model.rotation.y,3.14159);
+      // }
       if ( keyboard.pressed("A") ) {
         this.model.rotateOnAxis( new THREE.Vector3(0,0,1), rotateAngle * 2);
         laser.model.rotateOnAxis( new THREE.Vector3(0,0,1), rotateAngle * 2);
       }
+      // else if ( keyboard.pressed("A") ) {
+      //   this.model.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
+      //   laser.model.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
+      // }
       if ( keyboard.pressed("D") ) {
         this.model.rotateOnAxis( new THREE.Vector3(0,0,1), -rotateAngle * 2);
         laser.model.rotateOnAxis( new THREE.Vector3(0,0,1), -rotateAngle * 2);
       }
+      // else if ( keyboard.pressed("D") ) {
+      //   this.model.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
+      //   laser.model.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
+      // }
       
 
       // Controller Support
@@ -115,6 +146,7 @@ class Ship {
             laser.velocity.setDz(moveDistance);
           }
         }
+          this.model.rotateOnAxis( new THREE.Vector3(0,0,1), -pad.axes[0] / (dec/2) );
         if ( pad.axes[2] < -0.5 ) { // left/right
           this.model.rotateOnAxis( new THREE.Vector3(0,1,0), -pad.axes[2] / dec );
           laser.model.rotateOnAxis( new THREE.Vector3(0,1,0), -pad.axes[2] / dec );
@@ -134,7 +166,6 @@ class Ship {
           this.orientationYZ -= rotateAngle;
         }
         if ( pad.axes[0] < -0.2 ) {
-          this.model.rotateOnAxis( new THREE.Vector3(0,0,1), -pad.axes[0] / (dec/2) );
           laser.model.rotateOnAxis( new THREE.Vector3(0,0,1), -pad.axes[0] / (dec/2) );
         }
         if ( pad.axes[0] > 0.2 ) {

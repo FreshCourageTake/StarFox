@@ -41,7 +41,6 @@ function advance() {
           var rockPosZ = 0 + asteroids[a].model.position.z * Math.cos(deg2rad(asteroids[a].model.rotation.z));
           var rockPosX = 0 + asteroids[a].model.position.x * Math.cos(deg2rad(asteroids[a].model.rotation.z));
           var boundPos = HALFWORLD;
-          console.log(-rockPosX);
 
           if (-rockPosX > boundPos) {
             asteroids[a].model.position.x *= -1;
